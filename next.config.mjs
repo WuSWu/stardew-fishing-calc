@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // this is for GitHub Pages.
+    // if you're running on local delete the basePath line and put the file on .gitignore
+    // I'm not installing jekyll just for this 
+    basePath: "/stardew-fishing-calc",
     async redirects() {
     return [
         {
