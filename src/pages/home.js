@@ -101,11 +101,11 @@ export default function Home() {
     if (selectedSeason != "MagicBait") {
       if (checkedItems.isRaining) {
         let raining = tempFilteredFishData
-          .filter((fish) => !(fish.weather == "sunny"));
+          .filter((fish) => !(fish.weather == "sunny") || fish.IgnoreFishDataRequirements);
         tempFilteredFishData = raining
       } else {
         let sunny = tempFilteredFishData
-          .filter((fish) => !(fish.weather == "rainy"));
+          .filter((fish) => !(fish.weather == "rainy") || fish.IgnoreFishDataRequirements);
         tempFilteredFishData = sunny
       }
     }
@@ -157,6 +157,8 @@ export default function Home() {
     if (selectedSeason != "MagicBait") {
       let timeFilter = tempFilteredFishData
       .filter((fish) =>
+        fish.IgnoreFishDataRequirements
+        || 
         // single window fish
         (fish.time[0] <= timeOfDay &&  fish.time[1] > timeOfDay)
         ||
