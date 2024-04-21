@@ -9,7 +9,11 @@ const Layout = ({ children }) => {
                 {/* Header */}
                 <header className="bg-gray-800 text-white p-4">
                     <div className="container mx-auto flex justify-between items-center">
-                    <h1 className="text-2xl font-bold">will change to link when repo is uploaded</h1>
+                        <a
+                            href='https://github.com/brokencygnus/stardew-fishing-calc'
+                            target={"_blank"}>
+                            <h1 className="text-2xl font-bold">github.com/brokencygnus/stardew-fishing-calc</h1>
+                        </a>
                     </div>
                 </header>
 
@@ -20,7 +24,7 @@ const Layout = ({ children }) => {
 
                 <footer className="bg-gray-800 text-white text-center p-4">
                     <div className="container mx-auto">
-                    2024 brokencygnus, with calculation guidance from sicarious
+                    Stardew Valley made by ConcernedApe - Website by brokencygnus with help from Sicarious
                     </div>
                 </footer>
                 

@@ -266,35 +266,35 @@ export default function Home() {
               <p className="lg:text-lg md:text-md font-bold mb-2">Season</p>
               <div className="flex gap-4 items-center flex-wrap">
                 <RadioOptions
-                  customIcon="/assets/tile018.png"
+                  customIcon="/stardew-fishing-calc/assets/tile018.png"
                   label="Spring"
                   selectedColor="bg-green-300"
                   checked={selectedSeason === 'spring'}
                   onChange={() => handleSeasonChange('spring')}
                 />
                 <RadioOptions
-                  customIcon="/assets/tile402.png"
+                  customIcon="/stardew-fishing-calc/assets/tile402.png"
                   label="Summer"
                   selectedColor="bg-green-300"
                   checked={selectedSeason === 'summer'}
                   onChange={() => handleSeasonChange('summer')}
                 />
                 <RadioOptions
-                  customIcon="/assets/tile408.png"
+                  customIcon="/stardew-fishing-calc/assets/tile408.png"
                   label="Fall"
                   selectedColor="bg-green-300"
                   checked={selectedSeason === 'fall'}
                   onChange={() => handleSeasonChange('fall')}
                 />
                 <RadioOptions
-                  customIcon="/assets/tile416.png"
+                  customIcon="/stardew-fishing-calc/assets/tile416.png"
                   label="Winter"
                   selectedColor="bg-green-300"
                   checked={selectedSeason === 'winter'}
                   onChange={() => handleSeasonChange('winter')}
                 />
                 <RadioOptions
-                  customIcon="/assets/tile908.png"
+                  customIcon="/stardew-fishing-calc/assets/tile908.png"
                   label="Magic Bait"
                   selectedColor="bg-green-300"
                   checked={selectedSeason === 'MagicBait'}
@@ -309,35 +309,35 @@ export default function Home() {
               <p className="text-lg font-bold">Fishing Location</p>
               <div className="flex gap-4 items-center flex-wrap">
                 <RadioOptions
-                  customIcon="/assets/tile325.png"
+                  customIcon="/stardew-fishing-calc/assets/tile325.png"
                   label="Pelican Town"
                   selectedColor="bg-blue-300"
                   checked={selectedLocation === 'Town'}
                   onChange={() => handleLocationChange('Town')}
                 />
                 <RadioOptions
-                  customIcon="/assets/tile311.png"
+                  customIcon="/stardew-fishing-calc/assets/tile311.png"
                   label="Cindersap Forest"
                   selectedColor="bg-blue-300"
                   checked={selectedLocation === 'Forest'}
                   onChange={() => handleLocationChange('Forest')}
                 />
                 <RadioOptions
-                  customIcon="/assets/tile372.png"
+                  customIcon="/stardew-fishing-calc/assets/tile372.png"
                   label="Beach"
                   selectedColor="bg-blue-300"
                   checked={selectedLocation === 'Beach'}
                   onChange={() => handleLocationChange('Beach')}
                 />
                 <RadioOptions
-                  customIcon="/assets/tile032.png"
+                  customIcon="/stardew-fishing-calc/assets/tile032.png"
                   label="Mountain Lake"
                   selectedColor="bg-blue-300"
                   checked={selectedLocation === 'Mountain'}
                   onChange={() => handleLocationChange('Mountain')}
                 />
                 <RadioOptions
-                  customIcon="/assets/tile090.png"
+                  customIcon="/stardew-fishing-calc/assets/tile090.png"
                   label="Desert"
                   selectedColor="bg-blue-300"
                   checked={selectedLocation === 'Desert'}
@@ -436,7 +436,7 @@ export default function Home() {
           <div className="flex flex-grow flex-col bg-white py-4">
             {fishDataWithChance.map((fish, index) => {
               const iconNumber = (fish.Id && fish.Id.match(/\d+/)) ? fish.Id.match(/\d+/)[0] : null;
-              const iconPath = `/assets/tile${iconNumber}.png`;
+              const iconPath = `/stardew-fishing-calc/assets/tile${iconNumber}.png`;
 
               return (
                 <FishCard
@@ -452,7 +452,7 @@ export default function Home() {
                 key={fishDataWithChance.length}
                 name="Trash"
                 chance={parseFloat(trashRate*100).toFixed(2)+"%"}
-                icon={`/assets/tile168.png`}
+                icon={`/stardew-fishing-calc/assets/tile168.png`}
               />
           </div>
 
