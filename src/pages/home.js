@@ -469,11 +469,11 @@ export default function Home() {
                   <Tooltip>
                     <div className="w-96 text-wrap">
                       <p className="font-semibold">Jelly chance is a bit tricky.</p>
-                      <p>Whether you catch it or not depends on a seed. That seed depends on the number of fish you caught (excluding trash and algae). So we've included several options:</p>
+                      <p>Whether you catch it or not depends on a seed. That seed depends on the number of fish you caught (excluding trash and algae). So we`&apos;`ve included several options:</p>
                       <ul className="list-decimal list-inside">
                         <li>Long-term (default): The long term expected chance to catch jelly.</li>
                         <li>Next catch: The immediate chance to catch jelly given a random state. Your chance decreases when you catch trash.</li>
-                        <li>Good seed: If you have the correct seed, the chance for jelly becomes 1. There's still other fish to account for, though.</li>
+                        <li>Good seed: If you have the correct seed, the chance for jelly becomes 1. There`&apos;`s still other fish to account for, though.</li>
                         <li>Bad seed: If you have the wrong seed, the chance for jelly becomes 0.</li>
                       </ul>
                     </div>
