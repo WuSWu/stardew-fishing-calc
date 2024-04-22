@@ -70,16 +70,6 @@ footer {
   opacity: 0.6;
 }
 
-.slider:disabled::-webkit-slider-thumb {
-  opacity: 1;
-  cursor: context-menu;
-  background: #d3d3d3;
-}
-
-.slider:disabled::-moz-range-thumb {
-  cursor: context-menu;
-}
-
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -98,6 +88,43 @@ footer {
   cursor: pointer;
 }
 
+.slider:disabled::-webkit-slider-thumb {
+  opacity: 1;
+  cursor: context-menu;
+  background: #797979;
+}
+
+.slider:disabled::-moz-range-thumb {
+  opacity: 1;
+  cursor: context-menu;
+  background: #797979;
+}
+
+.collapsible-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.collapsible-button {
+  background-color: #f0f0f0;
+  border: none;
+  color: #333;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+.content-container {
+  transition: max-height 0.3s ease-out;
+  max-height: 0;
+}
+
+.content-container.open {
+  max-height: 200px;
+}
 
 @layer utilities {
   .text-balance {

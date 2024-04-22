@@ -10,7 +10,7 @@ export const getFishFromLocationAndSeason = (location, season) => {
         && !fish.Id.includes("|")
     );
 
-    var filterSeason = []
+    let filterSeason = []
     if (season != "MagicBait"){
         filterSeason = filters.filter((fish) => 
         ((fish.Season && fish.Season.toLowerCase() == season)

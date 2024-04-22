@@ -42,7 +42,7 @@ function chanceOfNFishCaughtFromPool(n, resultArray) {
 // btw the array is recursed not the function
 // it goes without saying that this gets factorially expensive, i don't know how expensive
 // starts to lag after 20ish items in the array (at 25 the middle array has 3 million items) 
-export function recursiveMultiply(chanceArray) {
+function recursiveMultiply(chanceArray) {
     let invertedArray = invertArray(chanceArray)
     let resultArray = (invertedArray.length > 0) ? [[invertedArray[0]]] : [];
     for (let i = 0; i < invertedArray.length - 1; i++) {
@@ -74,12 +74,77 @@ export function recursiveMultiply(chanceArray) {
 
 // tested this and it matches blade's numbers but in a far more efficient way (because I said so)
 // don't include the wanted fish in the same precedence array
-export function getNonTargetedChance(samePrecedence, higherPrecedence, chanceOfFishYouWant) {
+function getNonTargetedChance(samePrecedence, higherPrecedence, chanceOfFishYouWant) {
     let samePrecedenceChance = getFirstCatchChance(recursiveMultiply(samePrecedence), chanceOfFishYouWant)
     let higherPrecedenceChance = multiplyArrayElements(invertArray(higherPrecedence))
     return samePrecedenceChance*higherPrecedenceChance
 }
 
+export function rollFishPool(filteredFishData, index) {
+    let finalChance = 0
+    let wantedFishWeight = filteredFishData[index].weight;
+    let wantedFishPrecedence = filteredFishData[index].Precedence
+    let dataWithoutCurrentFish = filteredFishData.slice();
+    delete dataWithoutCurrentFish[index];
+
+    if (dataWithoutCurrentFish.length > 1){
+        let samePrecedence = [];
+        let higherPrecedence = [];
+        for (let j in dataWithoutCurrentFish) {
+            if (dataWithoutCurrentFish[j].weight != 0) {
+                let currentPrecedence = dataWithoutCurrentFish[j].Precedence
+                if (currentPrecedence == wantedFishPrecedence){
+                samePrecedence.push(dataWithoutCurrentFish[j].weight)
+                } else if (currentPrecedence < wantedFishPrecedence) {
+                higherPrecedence.push(dataWithoutCurrentFish[j].weight)
+                }
+            }
+        };
+        finalChance = getNonTargetedChance(samePrecedence, higherPrecedence, wantedFishWeight);  
+    } else {
+        finalChance = wantedFishWeight
+    }
+    return finalChance
+}
+
+//  JELLY CHANCE
+// so there are two states right, one where you can catch jelly and one where you cannot.
+// there are P(Jelly) of the former state and 1-P(Jelly) of the latter state.
+// but the states don't correlate with your fishing attempts since you can get stuck fishing trash in the 1-P(jelly) state without switching states
+// instead, your fishing attempts correlate with the amount of sub-states each state has.
+// in the 1-P(Jelly) state, you have 1-P(trash) chance of exiting the state immediately, P(trash)(1-P(trash)) chance of staying there for 2 substates, and so on.
+// so the average number of substates in the 1-P(jelly) state follows, 1*(1-P(trash)) + 2(P(trash)(1-P(trash)) + 3((P(trash)P(trash)(1-P(trash))
+// plugged sum of i*a(i-1) into wolfram alpha (because I don't understand how series work with derivatives) and the partial sum formula is sum(n) = (na^(n+1) - (n+1)a^n + 1)/(a-1)^2
+// the limit for na^(n+1) - (n+1)a^n for n->infinity is 0 no matter how large a is as long as it's not 1
+// therefore the infinite sum is just 1/(a-1)^2 which in our case is 1/(P(trash)-1)^2 or rather 1/(1-P(trash))^2 since the former gives a negative answer if factored
+// therefore the average number of substates is ((1-P(trash))/1-P(trash))^2 = 1/(1-P(trash))
+// this works with the P(Jelly) state as well, just with different P(trash) numbers
+// so on a given substate, the chance of it being in P(Jelly) state is P(Jelly) * n(substates in P(Jelly)) / (P(Jelly) * n(substates in P(Jelly)) + (1-P(Jelly) * n(substates in 1-P(Jelly))))
+// which gives us a final formula of  P(Jelly)/(1-P(trash_with_jelly)) / ( P(Jelly)/(1-P(trash_with_jelly)) + (1-P(Jelly))/(1-P(trash_without_jelly)) )
+// substituting P(trash_with_jelly) = P(trash_without_jelly)*(1-P(jelly))
+// let's call J = P(Jelly), T = P(trash_without_jelly)
+// final formula is J/(1-T*(1-J)) / ( J/(1-T*(1-J)) + (1-J)/(1-T) )
+// 
+// this function takes the trashChance and outputs the jelly coefficient. trashChance includes algae and seaweed.
+// run this after everything (including targeted bait calculation)
+export function getJellyChance(filteredFishData, luckBuffs) {
+    let trashFishRate = 0
+    let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
+    let jellyRate = jelly.Chance + 0.05*luckBuffs
+    for (let i in filteredFishData) {
+        if (filteredFishData[i].Id === "(O)152" || filteredFishData[i].Id === "(O)153" || filteredFishData[i].Id === "(O)157") {
+            let currentFinalChance = rollFishPool(filteredFishData, i)
+            trashFishRate += currentFinalChance
+        }
+    }
+    let trashTrashRate = chanceOfNFishCaughtFromPool(0, recursiveMultiply(filteredFishData))
+    let totalTrashRate = trashFishRate + trashTrashRate
+    let goodSeedSubstates = jellyRate*(1-totalTrashRate*(1-jellyRate))
+    let badSeedSubstates = (1-jellyRate)/(1-totalTrashRate)
+    let trueJellyRate = goodSeedSubstates / (goodSeedSubstates+badSeedSubstates)
+
+    return trueJellyRate
+}
 
 // basically finds the chance of catching fish when there are 0 fish in front of it, 1 fish, 2 fish, etc
 // all fish has to fail for the wanted fish to get caught first

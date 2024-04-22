@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       height: {
-        'custom': '60rem'
+        'custom': '80rem'
       },
       colors:{
         // 'blue': ''

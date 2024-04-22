@@ -1,14 +1,12 @@
-`useclient`
+`use client`
 import React from 'react';
+import styles from './Fadeout.module.css'
 
-const RadioOptions = ({ customIcon, label, checked, onChange, selectedColor }) => {
+export const RadioOptions = ({ customIcon, label, checked, onChange, deselectedColor, selectedColor }) => {
   return (
-    <div
-        className={`flex items-center justify-center w-24 h-24 border border-gray-400 ${
-          checked ? selectedColor : 'bg-white'
-        }`}
-      >
-      <label className="flex flex-col items-center cursor-pointer space-y-1">
+    <div className={`${deselectedColor} relative flex items-center justify-center size-24 rounded-lg border-2 border-gray-400 z-0 overflow-hidden`}>
+      <div className={`${selectedColor} absolute flex justify-center w-full h-full items-center z-10 ${checked ? styles.fadeout.checked : styles.fadeout}`} />
+      <label className="flex flex-col items-center select-none cursor-pointer space-y-1 p-2">
         <input
           type="radio"
           checked={checked}
@@ -19,14 +17,29 @@ const RadioOptions = ({ customIcon, label, checked, onChange, selectedColor }) =
           <img 
             src={customIcon}
             alt={label}
-            className="block w-10 h-10"
+            className="block size-10 z-20"
             style={{imageRendering: 'pixelated'}}
           />
         )}
-        <span className="text-center leading-4 ml-2 mr-2">{label}</span>
+        <span className="text-center text-black leading-4 my-2 z-20">{label}</span>
       </label>
     </div>
   );
 };
 
-export default RadioOptions;
+export const SmallOptions = ({ label, checked, onChange, deselectedColor, selectedColor }) => {
+  return (
+    <div className={`${deselectedColor} relative flex items-center justify-center rounded-lg border-2 border-gray-400 z-0 overflow-hidden`}>
+      <div className={`${selectedColor} absolute flex justify-center w-full h-full items-center z-10  ${checked ? styles.fadeout.checked : styles.fadeout}`} />
+      <label className="flex flex-col items-center select-none cursor-pointer space-y-1 p-2">
+        <input
+          type="radio"
+          checked={checked}
+          onChange={onChange}
+          className="hidden"
+        />
+        <span className="text-center text-black leading-4 my-2 z-20 text-nowrap">{label}</span>
+      </label>
+    </div>
+  );
+};

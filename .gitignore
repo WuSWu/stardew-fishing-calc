@@ -8,6 +8,8 @@
 
 # testing
 /coverage
+/src/pages/test.js
+/src/pages/test.module.css
 
 # next.js
 /.next/

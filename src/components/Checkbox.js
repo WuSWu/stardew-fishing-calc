@@ -3,14 +3,14 @@ import React from 'react';
 
 const Checkbox = ({ id, label, checked, onChange, disabled }) => {
   return (
-    <label className="flex items-center cursor-pointer space-x-2">
+    <label className="flex items-center select-none cursor-pointer space-x-2">
       <input
         id={id}
         type="checkbox"
         onChange={onChange}
         checked={checked}
         disabled={disabled}
-        className="form-checkbox h-5 w-5 text-blue-500"
+        className="form-checkbox h-5 w-5 text-blue-600"
       />
       <span>{label}</span>
     </label>

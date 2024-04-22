@@ -1,0 +1,10 @@
+.fadeout {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition: width 0.5s ease, height 0.5s ease, opacity 0.2s ease;
+}
+  
+.fadeout.checked {
+  opacity: 0.5;
+}
