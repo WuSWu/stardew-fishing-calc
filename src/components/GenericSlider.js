@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 
-const GenericSlider = ({ min, max, value, onChange, disabled }) => {
+const GenericSlider = ({ title, min, max, value, onChange, disabled }) => {
 
     const snapValues = Array.from({length:101}, (_, index) => 0 + index);
 
@@ -18,19 +18,22 @@ const GenericSlider = ({ min, max, value, onChange, disabled }) => {
     };
 
     return (
-        <div>
-        <input
-            type="range"
-            min={min}
-            max={max}
-            value={value}
-            disabled={disabled}
-            onChange={handleSliderChange}
-            onMouseUp={handleSnap}
-            onTouchEnd={handleSnap}
-            className="slider"
-        />
-        <p>{value}</p>
+        <div className="mb-4">
+            <div className="flex flex-row items-center justify-between mb-2">
+                <p className="text-base font-semibold">{title}</p>
+                <p className="px-2">{value}</p>
+            </div>
+            <input
+                type="range"
+                min={min}
+                max={max}
+                value={value}
+                disabled={disabled}
+                onChange={handleSliderChange}
+                onMouseUp={handleSnap}
+                onTouchEnd={handleSnap}
+                className="slider"
+            />
         </div>
     );
 };

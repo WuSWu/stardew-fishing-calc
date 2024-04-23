@@ -21,7 +21,7 @@ export const RadioOptions = ({ customIcon, label, checked, onChange, deselectedC
             style={{imageRendering: 'pixelated'}}
           />
         )}
-        <span className="text-center text-black leading-4 my-2 z-20">{label}</span>
+        <span className="text-center text-black leading-4 z-20">{label}</span>
       </label>
     </div>
   );
@@ -31,14 +31,14 @@ export const SmallOptions = ({ label, checked, onChange, deselectedColor, select
   return (
     <div className={`${deselectedColor} relative flex items-center justify-center rounded-lg border-2 border-gray-400 z-0 overflow-hidden`}>
       <div className={`${selectedColor} absolute flex justify-center w-full h-full items-center z-10  ${checked ? styles.fadeout.checked : styles.fadeout}`} />
-      <label className="flex flex-col items-center select-none cursor-pointer space-y-1 p-2">
+      <label className="flex flex-col items-center select-none cursor-pointer p-2">
         <input
           type="radio"
           checked={checked}
           onChange={onChange}
           className="hidden"
         />
-        <span className="text-center text-black leading-4 my-2 z-20 text-nowrap">{label}</span>
+        <span className="text-center text-black leading-4 z-20 text-nowrap">{label}</span>
       </label>
     </div>
   );

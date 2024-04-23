@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 
-const TimeSlider = ({ value, onChange, disabled }) => {
+const TimeSlider = ({ title, value, onChange, disabled }) => {
 
   const snapValues = Array.from({length:20}, (_, index) => 600 + index * 100);
   snapValues.forEach((e) =>
@@ -54,19 +54,22 @@ const TimeSlider = ({ value, onChange, disabled }) => {
   };
 
   return (
-    <div>
-      <input
-        type="range"
-        min={600}
-        max={2599}
-        value={value}
-        disabled={disabled}
-        onChange={handleSliderChange}
-        onMouseUp={handleSnap}
-        onTouchEnd={handleSnap}
-        className="slider"
-      />
-      <p>{convertToTime(value)}</p>
+    <div className="mb-4">
+        <div className="flex flex-row items-center justify-between mb-2">
+            <p className="text-base font-bold">{title}</p>
+            <p className="px-2">{convertToTime(value)}</p>
+        </div>
+        <input
+            type="range"
+            min={600}
+            max={2599}
+            value={value}
+            disabled={disabled}
+            onChange={handleSliderChange}
+            onMouseUp={handleSnap}
+            onTouchEnd={handleSnap}
+            className="slider"
+        />
     </div>
   );
 };

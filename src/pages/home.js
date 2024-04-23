@@ -211,7 +211,10 @@ export default function Home() {
         // get jelly chance
         if (jellyMode === "longterm") {
           let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
-          jelly && (jelly.weight = getJellyChance(filteredFishData, luckBuffs))
+          let jellyArray = []
+          jelly && (jellyArray = getJellyChance(filteredFishData, luckBuffs))
+          jelly.weight = jellyArray[0]
+          console.log(jellyArray)
         } else if (jellyMode === "nextcatch") {
           let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
           jelly && (jelly.weight = jelly.Chance + 0.05*luckBuffs)
@@ -284,7 +287,7 @@ export default function Home() {
           <h1 className="lg:text-2xl md:text-lg font-bold mb-4 flex-wrap">Stardew Valley Fishing Calculator</h1>
           <p className="text-lg text-gray-700">Calculates how likely fish will bite!</p>
 
-          <div className='mt-6 mb-6'>
+          <div className='my-4'>
             <div className="rounded-lg bg-green-200 text-green-800 p-2">
               <p className="lg:text-lg md:text-base font-bold mb-2">Season</p>
               <div className="flex gap-4 items-center flex-wrap">
@@ -332,7 +335,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className='mt-2 mb-2'>
+          <div className='my-4'>
             <div className="rounded-lg bg-blue-200 text-blue-800 p-2">
               <p className="lg:text-lg md:text-base font-bold mb-2">Fishing Location</p>
               <div className="flex gap-4 items-center flex-wrap">
@@ -380,18 +383,18 @@ export default function Home() {
             </div>
           </div>
 
-          <div className='mt-6 mb-6'>
-            <p className="text-lg font-bold mb-2">Fishing Time</p>
+          <div className='my-4 rounded-lg border-2 p-2'>
             <TimeSlider
+              title="Fishing Time:"
               value={timeOfDay}
               disabled={(selectedSeason == 'MagicBait') ? true : false}
               onChange={handleTimeChange} 
             />
           </div>
 
-          <div className='mt-6 mb-6'>
-            <p className="text-lg font-bold mb-2">Fish Pool Modifiers</p>
-            <div className="grid sm:grid-cols-1 md:grid-cols-2">
+          <div className='my-4 rounded-lg border-2 p-2'>
+            <p className="text-base font-bold mb-2">Fish Pool Modifiers</p>
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 mb-2 gap-8">
               <div>
                 <Checkbox
                   label="Raining"
@@ -428,20 +431,20 @@ export default function Home() {
             </div>
           </div>
 
-          <div className='mt-6 mb-6'>
+          <div className='my-4 rounded-lg border-2 px-2 pt-2'>
             <p className="text-base font-bold mb-2">Catch Rate Modifiers</p>
             <div>
-              <div className="grid sm:grid-cols-1 md:grid-cols-2 mb-4 gap-16">
+              <div className="grid sm:grid-cols-1 md:grid-cols-2 mb-2 gap-8">
                 <div>
-                  <p className="text-base font-semibold mb-2">Fishing Level:</p>
                   <GenericSlider
+                    title="Fishing Level:"
                     min={0}
                     max={15}
                     value={fishingLevel}
                     onChange={handleFishingLevelChange} 
                   />
-                  <p className="text-base font-semibold mb-2">Luck Buff Level:</p>
                   <GenericSlider
+                    title="Luck Buff Level:"
                     min={0}
                     max={8}
                     value={luckBuffs}
@@ -449,8 +452,8 @@ export default function Home() {
                   />
                 </div>
                 <div>
-                  <p className="text-base font-semibold mb-2">Water Depth:</p>
                   <GenericSlider
+                    title="Water Depth:"
                     min={0}
                     max={5}
                     value={waterDepth}
@@ -469,7 +472,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className='mt-6 mb-6'>
+          <div className='my-4'>
             <Accordion
               title="Advanced Options"
             >

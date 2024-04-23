@@ -129,6 +129,7 @@ export function rollFishPool(filteredFishData, index) {
 // run this after everything (including targeted bait calculation)
 export function getJellyChance(filteredFishData, luckBuffs) {
     let trashFishRate = 0
+    let trashTrashRate = 1
     let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
     let jellyRate = jelly.Chance + 0.05*luckBuffs
     for (let i in filteredFishData) {
@@ -137,13 +138,17 @@ export function getJellyChance(filteredFishData, luckBuffs) {
             trashFishRate += currentFinalChance
         }
     }
-    let trashTrashRate = chanceOfNFishCaughtFromPool(0, recursiveMultiply(filteredFishData))
+    for (let i in filteredFishData) {
+        if (!filteredFishData[i].Id || !filteredFishData[i].Id.match(/Jelly/)){
+            trashTrashRate *= (1-filteredFishData[i].weight)
+        }
+    }
     let totalTrashRate = trashFishRate + trashTrashRate
     let goodSeedSubstates = jellyRate*(1-totalTrashRate*(1-jellyRate))
     let badSeedSubstates = (1-jellyRate)/(1-totalTrashRate)
     let trueJellyRate = goodSeedSubstates / (goodSeedSubstates+badSeedSubstates)
 
-    return trueJellyRate
+    return [trueJellyRate, trashFishRate, trashTrashRate, totalTrashRate]
 }
 
 // basically finds the chance of catching fish when there are 0 fish in front of it, 1 fish, 2 fish, etc
