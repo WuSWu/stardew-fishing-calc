@@ -37,7 +37,6 @@ export default function Home() {
   // update and pull Fish.xnb only
   const [appendedFishData, setAppendedFishData] = useState([]);
   // update and only use stored data
-  const [weightedFishData, setWeightedFishData] = useState([]);
   const [filteredFishData, setFilteredFishData] = useState([]);
   const [fishDataWithChance, setFishDataWithChance] = useState([]);
   
@@ -91,26 +90,9 @@ export default function Home() {
     setAppendedFishData(tempFishParamArray);
   }, [locationFishData]);
 
-    
-  // catch rate modifiers changed
-  useEffect(() => {
-    setFishDataWithChance([])
-    let tempFishParamArray = [];
-    for (let i in appendedFishData) {
-      let fish = appendedFishData[i]
-      if (fish.Id && !fish.Id.match(/Jelly/)) {
-        fish["weight"] = calculateWeight(fish)
-      }
-      tempFishParamArray.push(fish)
-    }
-    setWeightedFishData(tempFishParamArray);
-  }, [appendedFishData, checkedItems.isUsingTrainingRod, checkedItems.isCuriosityLureActive, fishingLevel, waterDepth, jellyMode, luckBuffs])
-
-
   // filter fish data using parameters
   useEffect(() => {
-    let tempFilteredFishData = weightedFishData.slice()
-
+    let tempFilteredFishData = appendedFishData.slice()
 
     // filter extended family
     if (!checkedItems.isExtendedFamilyActive) {
@@ -147,7 +129,7 @@ export default function Home() {
     // trout derby
     // must be after raining and before time
     if (checkedItems.isTroutDerbyActive) {
-      let rainbowTrout = weightedFishData.filter((fish) =>
+      let rainbowTrout = appendedFishData.filter((fish) =>
         fish.Condition && fish.Condition.includes("TroutDerby"))
       if (rainbowTrout[0]) rainbowTrout[0].name = "Rainbow Trout (from event)"
       if (rainbowTrout[0]) rainbowTrout[0].time = ["0600", "2600"]
@@ -161,7 +143,7 @@ export default function Home() {
 
     // squid fest
     if (checkedItems.isSquidFestActive) {
-      let squid = weightedFishData.filter((fish) =>
+      let squid = appendedFishData.filter((fish) =>
         fish.Condition && fish.Condition.includes("SquidFest"))
 
       // squid time
@@ -202,13 +184,21 @@ export default function Home() {
     }
 
     setFilteredFishData(tempFilteredFishData)
-  }, [weightedFishData, timeOfDay, checkedItems.isExtendedFamilyActive, checkedItems.isRaining, checkedItems.isTroutDerbyActive, checkedItems.isSquidFestActive])
+  }, [appendedFishData, timeOfDay, checkedItems.isExtendedFamilyActive, checkedItems.isRaining, checkedItems.isTroutDerbyActive, checkedItems.isSquidFestActive])
 
 
   // calculate chances
   useEffect(() => {
     let tempFishParamArray = [];
     let tempTrashRate = 1
+
+    for (let i in filteredFishData) {
+      let fish = filteredFishData[i]
+      if (fish.Id && !fish.Id.match(/Jelly/)) {
+        fish["weight"] = calculateWeight(fish)
+      }
+    }
+
     if (filteredFishData.length > 0){
       if (targetedBaitName === "") {
 
@@ -241,7 +231,7 @@ export default function Home() {
     } else {
       setFishDataWithChance([])
     }
-  }, [filteredFishData, targetedBaitName])
+  }, [filteredFishData, targetedBaitName, checkedItems.isUsingTrainingRod, checkedItems.isCuriosityLureActive, fishingLevel, waterDepth, jellyMode, luckBuffs])
 
   function calculateWeight(fish) {
     let weight = fish.baseRate*fish.Chance
@@ -480,10 +470,10 @@ export default function Home() {
                 <div className="flex flex-row gap-2">
                   <p className="text-base text-gray-800 font-semibold mb-2">Jelly Calculation Mode:</p>
                   <Tooltip>
-                    <div className="w-96 text-wrap">
-                      <p className="font-semibold">Jelly chance is a bit tricky.</p>
+                    <div className="text-sm w-96 text-wrap">
+                      <p className="text-sm font-semibold">Jelly chance is a bit tricky.</p>
                       <p>Whether you catch it or not depends on a seed. That seed depends on the number of fish you caught (excluding trash and algae). So we&apos;ve included several options:</p>
-                      <ul className="list-decimal list-inside">
+                      <ul className="text-sm mt-2 list-decimal list-inside">
                         <li>Long-term (default): The expected chance to catch jelly if you&apos;re fishing in the same location for a long time.</li>
                         <li>Next catch: The immediate chance to catch jelly given a random state. Your chance decreases when you catch trash.</li>
                         <li>Good seed: If you have the correct seed, the chance for jelly becomes 1. There&apos;s still other fish to account for, though.</li>
