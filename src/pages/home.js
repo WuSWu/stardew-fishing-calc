@@ -22,6 +22,7 @@ export default function Home() {
   const [trashRate, setTrashRate] = useState(1);
   const [jellyMode, setJellyMode] = useState("longterm");
   const [luckBuffs, setLuckBuffs] = useState(0);
+  const [dailyLuck, setDailyLuck] = useState(0);
   const [checkedItems, setCheckedItems] = useState({
     isCuriosityLureActive: false,
     isExtendedFamilyActive: false,
@@ -29,7 +30,6 @@ export default function Home() {
     isTroutDerbyActive: false,
     isSquidFestActive: false,
     isUsingTrainingRod: false,
-    dailyLuck: 0
   });
 
   // update and pull Locations.xnb and Fish.xnb
@@ -110,7 +110,9 @@ export default function Home() {
 
     // filter fishing level requirements
     let fishingHighEnough = tempFilteredFishData
-      .filter((fish) => !fish.requiredLevel || fish.requiredLevel <= fishingLevel);
+      .filter((fish) => 
+        (!fish.requiredLevel || fish.IgnoreFishDataRequirements || fish.requiredLevel <= fishingLevel)
+        && (fish.MinFishingLevel <= fishingLevel ));
     tempFilteredFishData = fishingHighEnough;
 
     // filter raining
@@ -125,6 +127,12 @@ export default function Home() {
         tempFilteredFishData = sunny
       }
     }
+
+    // filter shore distances
+    let distance = tempFilteredFishData.filter((fish) =>
+      (fish.MaxDistanceFromShore <= -1 || waterDepth <= fish.MaxDistanceFromShore) 
+      && (waterDepth >= fish.MinDistanceFromShore))
+    tempFilteredFishData = distance
 
     // trout derby
     // must be after raining and before time
@@ -184,8 +192,7 @@ export default function Home() {
     }
 
     setFilteredFishData(tempFilteredFishData)
-  }, [appendedFishData, timeOfDay, checkedItems.isExtendedFamilyActive, checkedItems.isRaining, checkedItems.isTroutDerbyActive, checkedItems.isSquidFestActive])
-
+  }, [appendedFishData, timeOfDay, checkedItems.isExtendedFamilyActive, checkedItems.isRaining, checkedItems.isTroutDerbyActive, checkedItems.isSquidFestActive, fishingLevel])
 
   // calculate chances
   useEffect(() => {
@@ -231,29 +238,53 @@ export default function Home() {
     } else {
       setFishDataWithChance([])
     }
-  }, [filteredFishData, targetedBaitName, checkedItems.isUsingTrainingRod, checkedItems.isCuriosityLureActive, fishingLevel, waterDepth, jellyMode, luckBuffs])
 
-  function calculateWeight(fish) {
-    let weight = fish.baseRate*fish.Chance
-    weight *= (1 - Math.max(0, fish.maxDepth - waterDepth) * fish.depthMultiplier);
-    weight += 0.02 * fishingLevel
-    if (checkedItems.isUsingTrainingRod && selectedSeason != "MagicBait") weight *= 1.1
-    weight = Math.min(weight, 0.9)
-    if (checkedItems.isCuriosityLureActive && weight < 0.25) {
-      if (fish.CuriosityLureBuff > -1) {
-        weight += fish.CuriosityLureBuff
+    function calculateWeight(fish) {
+      console.log(fish)
+      let chanceFromFishData = 0;
+      if (!fish.IgnoreFishDataRequirements) {
+        chanceFromFishData = fish.baseRate
+        chanceFromFishData *= (1 - Math.max(0, fish.maxDepth - waterDepth) * fish.depthMultiplier);
+        chanceFromFishData += 0.02 * fishingLevel
+        if (checkedItems.isUsingTrainingRod && selectedSeason != "MagicBait") {
+          chanceFromFishData *= 1.1
+        }
+        chanceFromFishData = Math.min(chanceFromFishData, 0.9)
+        if (checkedItems.isCuriosityLureActive && chanceFromFishData < 0.25) {
+          if (fish.CuriosityLureBuff > -1) {
+            chanceFromFishData += fish.CuriosityLureBuff
+          } else {
+            chanceFromFishData = (0.68 * chanceFromFishData + 0.085);
+          }
+        }
+        if (targetedBaitName == fish.name) {
+          chanceFromFishData *= 1.66
+        }
+        if (fish.ApplyDailyLuck) {
+          chanceFromFishData += dailyLuck
+        }
       } else {
-        weight = (0.68 * weight + 0.085);
+        chanceFromFishData = 1
       }
+
+      let chanceFromLocationData = fish.Chance
+      if (checkedItems.isCuriosityLureActive) {
+        if (fish.CuriosityLureBuff > 0) {
+          chanceFromLocationData += fish.CuriosityLureBuff
+        }
+      }
+      if (targetedBaitName == fish.name) {
+        chanceFromLocationData *= 1.66
+      }
+      if (fish.ApplyDailyLuck) {
+        chanceFromLocationData += dailyLuck
+      }
+
+      chanceFromFishData = Math.min(1, Math.max(0, chanceFromFishData))
+      chanceFromLocationData = Math.min(1, Math.max(0, chanceFromLocationData))
+      return chanceFromFishData * chanceFromLocationData;
     }
-    if (targetedBaitName == fish.name) {
-      weight *= 1.66
-    }
-    if (fish.ApplyDailyLuck) {
-      weight += dailyLuck
-    }
-    return weight;
-  }
+  }, [filteredFishData, targetedBaitName, checkedItems.isUsingTrainingRod, checkedItems.isCuriosityLureActive, waterDepth, jellyMode, luckBuffs])
 
   const handleTimeChange = (value) => setTimeOfDay(value);
   const handleFishingLevelChange = (value) => setFishingLevel(value);
