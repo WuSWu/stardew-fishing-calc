@@ -211,10 +211,7 @@ export default function Home() {
         // get jelly chance
         if (jellyMode === "longterm") {
           let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
-          let jellyArray = []
-          jelly && (jellyArray = getJellyChance(filteredFishData, luckBuffs))
-          jelly.weight = jellyArray[0]
-          console.log(jellyArray)
+          jelly && (jelly.weight = getJellyChance(filteredFishData, luckBuffs))
         } else if (jellyMode === "nextcatch") {
           let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
           jelly && (jelly.weight = jelly.Chance + 0.05*luckBuffs)

@@ -148,7 +148,7 @@ export function getJellyChance(filteredFishData, luckBuffs) {
     let badSeedSubstates = (1-jellyRate)/(1-totalTrashRate)
     let trueJellyRate = goodSeedSubstates / (goodSeedSubstates+badSeedSubstates)
 
-    return [trueJellyRate, trashFishRate, trashTrashRate, totalTrashRate]
+    return trueJellyRate
 }
 
 // basically finds the chance of catching fish when there are 0 fish in front of it, 1 fish, 2 fish, etc
