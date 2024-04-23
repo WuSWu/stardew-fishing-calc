@@ -45,13 +45,15 @@ export default function Home() {
   // makes sure the fish window height doesn't overflow the main window
   const fishDisplayWindow = useRef();
   const parametersWindow = useRef();
-  const [maxHeight, setMaxHeight] = useState(1000);
+  const [maxHeight, setMaxHeight] = useState(null);
   useEffect(() => {
     const observer = new ResizeObserver(entries => {
       for (let entry of entries) {
-        if (entry.target === parametersWindow.current) {
+        if (entry.target === parametersWindow.current && window.innerWidth >= 1024) {
           const newMaxHeight = parametersWindow.current.clientHeight;
           setMaxHeight(newMaxHeight);
+        } else {
+          setMaxHeight(null);
         }
       }
     });
@@ -64,6 +66,7 @@ export default function Home() {
 
   // pull new fish data if relevant settings are changed
   useEffect(() => {
+    setLocationFishData([])
     const updatedLocationFishData = getFishFromLocationAndSeason(selectedLocation, selectedSeason);
     setLocationFishData(updatedLocationFishData);
   }, [selectedLocation, selectedSeason]);
@@ -91,10 +94,11 @@ export default function Home() {
     
   // catch rate modifiers changed
   useEffect(() => {
+    setFishDataWithChance([])
     let tempFishParamArray = [];
     for (let i in appendedFishData) {
       let fish = appendedFishData[i]
-      if (!fish.Id.match(/Jelly/)) {
+      if (fish.Id && !fish.Id.match(/Jelly/)) {
         fish["weight"] = calculateWeight(fish)
       }
       tempFishParamArray.push(fish)
@@ -238,7 +242,6 @@ export default function Home() {
       setFishDataWithChance([])
     }
   }, [filteredFishData, targetedBaitName])
-
 
   function calculateWeight(fish) {
     let weight = fish.baseRate*fish.Chance
@@ -524,7 +527,7 @@ export default function Home() {
           </div>
         </div>
         
-          <div ref={fishDisplayWindow} style={{ maxHeight }} className="bg-white rounded shadow-xl lg:w-80 lg:h-full lg:overflow-y-auto">
+          <div ref={fishDisplayWindow} style={{ maxHeight }} className="flex flex-col bg-white rounded shadow-xl lg:w-80 lg:h-full lg:overflow-y-auto">
           <div className="sticky top-0 bg-gray-200 text-gray-600 p-4">
               <h3 className="text-xl font-bold">You will catch...</h3>
           </div>

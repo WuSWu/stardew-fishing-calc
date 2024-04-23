@@ -121,9 +121,6 @@ export function rollFishPool(filteredFishData, index) {
 // this works with the P(Jelly) state as well, just with different P(trash) numbers
 // so on a given substate, the chance of it being in P(Jelly) state is P(Jelly) * n(substates in P(Jelly)) / (P(Jelly) * n(substates in P(Jelly)) + (1-P(Jelly) * n(substates in 1-P(Jelly))))
 // which gives us a final formula of  P(Jelly)/(1-P(trash_with_jelly)) / ( P(Jelly)/(1-P(trash_with_jelly)) + (1-P(Jelly))/(1-P(trash_without_jelly)) )
-// substituting P(trash_with_jelly) = P(trash_without_jelly)*(1-P(jelly))
-// let's call J = P(Jelly), T = P(trash_without_jelly)
-// final formula is J/(1-T*(1-J)) / ( J/(1-T*(1-J)) + (1-J)/(1-T) )
 // 
 // this function takes the trashChance and outputs the jelly coefficient. trashChance includes algae and seaweed.
 // run this after everything (including targeted bait calculation)
@@ -132,20 +129,40 @@ export function getJellyChance(filteredFishData, luckBuffs) {
     let trashTrashRate = 1
     let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
     let jellyRate = jelly.Chance + 0.05*luckBuffs
-    for (let i in filteredFishData) {
-        if (filteredFishData[i].Id === "(O)152" || filteredFishData[i].Id === "(O)153" || filteredFishData[i].Id === "(O)157") {
-            let currentFinalChance = rollFishPool(filteredFishData, i)
-            trashFishRate += currentFinalChance
+
+    let modifiedPool = filteredFishData.slice()
+    let jellyInModifiedPool = modifiedPool.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
+
+    let trashFishWithJellyRate = 0
+    let trashTrashWithJellyRate = 1
+    jellyInModifiedPool.weight = 1
+    for (let i in modifiedPool) {
+        if (modifiedPool[i].Id === "(O)152" || modifiedPool[i].Id === "(O)153" || modifiedPool[i].Id === "(O)157") {
+            let currentFinalChance = rollFishPool(modifiedPool, i)
+            trashFishWithJellyRate += currentFinalChance
         }
     }
-    for (let i in filteredFishData) {
-        if (!filteredFishData[i].Id || !filteredFishData[i].Id.match(/Jelly/)){
-            trashTrashRate *= (1-filteredFishData[i].weight)
+    for (let i in modifiedPool) {
+        trashTrashWithJellyRate *= (1-modifiedPool[i].weight)
+    }
+    let totalTrashWithJelly = trashFishWithJellyRate + trashTrashWithJellyRate
+
+    let trashFishWithoutJellyRate = 0
+    let trashTrashWithoutJellyRate = 1
+    jellyInModifiedPool.weight = 0
+    for (let i in modifiedPool) {
+        if (modifiedPool[i].Id === "(O)152" || modifiedPool[i].Id === "(O)153" || modifiedPool[i].Id === "(O)157") {
+            let currentFinalChance = rollFishPool(modifiedPool, i)
+            trashFishWithoutJellyRate += currentFinalChance
         }
     }
-    let totalTrashRate = trashFishRate + trashTrashRate
-    let goodSeedSubstates = jellyRate*(1-totalTrashRate*(1-jellyRate))
-    let badSeedSubstates = (1-jellyRate)/(1-totalTrashRate)
+    for (let i in modifiedPool) {
+        trashTrashWithoutJellyRate *= (1-modifiedPool[i].weight)
+    }
+    let totalTrashWithoutJelly = trashFishWithoutJellyRate + trashTrashWithoutJellyRate
+
+    let goodSeedSubstates = jellyRate*(1-totalTrashWithJelly)
+    let badSeedSubstates = (1-jellyRate)/(1-totalTrashWithoutJelly)
     let trueJellyRate = goodSeedSubstates / (goodSeedSubstates+badSeedSubstates)
 
     return trueJellyRate
