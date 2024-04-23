@@ -192,7 +192,7 @@ export default function Home() {
     }
 
     setFilteredFishData(tempFilteredFishData)
-  }, [appendedFishData, timeOfDay, checkedItems.isExtendedFamilyActive, checkedItems.isRaining, checkedItems.isTroutDerbyActive, checkedItems.isSquidFestActive, fishingLevel])
+  }, [appendedFishData, timeOfDay, checkedItems.isUsingTrainingRod, waterDepth, checkedItems.isExtendedFamilyActive, checkedItems.isRaining, checkedItems.isTroutDerbyActive, checkedItems.isSquidFestActive, fishingLevel])
 
   // calculate chances
   useEffect(() => {
@@ -284,7 +284,7 @@ export default function Home() {
       chanceFromLocationData = Math.min(1, Math.max(0, chanceFromLocationData))
       return chanceFromFishData * chanceFromLocationData;
     }
-  }, [filteredFishData, targetedBaitName, checkedItems.isUsingTrainingRod, checkedItems.isCuriosityLureActive, waterDepth, jellyMode, luckBuffs])
+  }, [filteredFishData, targetedBaitName, checkedItems.isCuriosityLureActive, jellyMode, luckBuffs])
 
   const handleTimeChange = (value) => setTimeOfDay(value);
   const handleFishingLevelChange = (value) => setFishingLevel(value);
