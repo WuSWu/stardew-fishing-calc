@@ -159,9 +159,9 @@ export function getJellyChance(filteredFishData, luckBuffs) {
     }
     let totalTrashWithoutJelly = trashFishWithoutJellyRate + trashTrashWithoutJellyRate
 
-    let goodSeedSubstates = jellyRate*(1-totalTrashWithJelly)
-    let badSeedSubstates = (1-jellyRate)/(1-totalTrashWithoutJelly)
-    let trueJellyRate = goodSeedSubstates / (goodSeedSubstates+badSeedSubstates)
+    let goodSeedSubstates = jellyRate / (1 - totalTrashWithJelly)
+    let badSeedSubstates = (1 - jellyRate) / (1 - totalTrashWithoutJelly)
+    let trueJellyRate = goodSeedSubstates / (goodSeedSubstates + badSeedSubstates)
 
     return trueJellyRate
 }
