@@ -50,7 +50,7 @@ function recursiveMultiply(chanceArray) {
         for (let j = 0; j < currentLength; j++) {
             let tempArray = [];
             for (let k = 0; k <= resultArray[currentLength - j - 1].length - 1; k++) {
-                if (resultArray[currentLength - j - 1][k]) {
+                if (resultArray[currentLength - j - 1][k] !== undefined) {
                 let newValue = resultArray[currentLength - j - 1][k]*(invertedArray[i + 1])
                 tempArray.push(newValue);
                 }
@@ -77,7 +77,7 @@ function recursiveMultiply(chanceArray) {
 function getNonTargetedChance(samePrecedence, higherPrecedence, chanceOfFishYouWant) {
     let samePrecedenceChance = getFirstCatchChance(recursiveMultiply(samePrecedence), chanceOfFishYouWant)
     let higherPrecedenceChance = multiplyArrayElements(invertArray(higherPrecedence))
-    return samePrecedenceChance*higherPrecedenceChance
+    return samePrecedenceChance * higherPrecedenceChance
 }
 
 export function rollFishPool(filteredFishData, index) {
@@ -125,8 +125,6 @@ export function rollFishPool(filteredFishData, index) {
 // this function takes the trashChance and outputs the jelly coefficient. trashChance includes algae and seaweed.
 // run this after everything (including targeted bait calculation)
 export function getJellyChance(filteredFishData, luckBuffs) {
-    let trashFishRate = 0
-    let trashTrashRate = 1
     let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
     let jellyRate = jelly.Chance + 0.05*luckBuffs
 

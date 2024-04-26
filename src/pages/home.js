@@ -140,7 +140,6 @@ export default function Home() {
       let rainbowTrout = appendedFishData.filter((fish) =>
         fish.Condition && fish.Condition.includes("TroutDerby"))
       if (rainbowTrout[0]) rainbowTrout[0].name = "Rainbow Trout (from event)"
-      if (rainbowTrout[0]) rainbowTrout[0].time = ["0600", "2600"]
       tempFilteredFishData.concat(rainbowTrout)
     } else {
       let noTroutDerbyTrout = tempFilteredFishData.filter((fish) => 
@@ -180,7 +179,7 @@ export default function Home() {
     if (selectedSeason != "MagicBait") {
       let timeFilter = tempFilteredFishData
       .filter((fish) =>
-        fish.IgnoreFishDataRequirements
+        (fish.IgnoreFishDataRequirements && (!fish.Condition || !fish.Condition.includes("TIME")))
         || 
         // single window fish
         (fish.time[0] <= timeOfDay &&  fish.time[1] > timeOfDay)
@@ -240,7 +239,6 @@ export default function Home() {
     }
 
     function calculateWeight(fish) {
-      console.log(fish)
       let chanceFromFishData = 0;
       if (!fish.IgnoreFishDataRequirements) {
         chanceFromFishData = fish.baseRate
