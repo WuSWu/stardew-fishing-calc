@@ -448,7 +448,7 @@ export default function Home() {
 
           <div className='my-4 rounded-lg border-2 p-2'>
             <p className="text-base font-bold mb-2">Fish Pool Modifiers</p>
-            <div className="grid sm:grid-cols-1 md:grid-cols-2 mb-2 gap-8">
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 mb-2 md:gap-8">
               <div>
                 <Checkbox
                   label="Raining"
@@ -488,7 +488,7 @@ export default function Home() {
           <div className='my-4 rounded-lg border-2 px-2 pt-2'>
             <p className="text-base font-bold mb-2">Catch Rate Modifiers</p>
             <div>
-              <div className="grid sm:grid-cols-1 md:grid-cols-2 mb-2 gap-8">
+              <div className="grid sm:grid-cols-1 md:grid-cols-2 mb-2 md:gap-8">
                 <div>
                   <GenericSlider
                     title="Fishing Level:"

@@ -21,11 +21,12 @@ const TargetedContainer = ({ options, onSelect, children, disabled }) => {
     }, [filteredOptions]);
 
     useEffect(() => {
-        document.getElementById("dropdownSearch").value = (selectedOption[1]) ? selectedOption[1] : "Select fish...";
+        document.getElementById("dropdownSearch").value = (selectedOption[1]) ? selectedOption[1] : "Select fish";
         onSelect((selectedOption[1]) ? selectedOption[1] : "")
     }, [selectedOption, isOpen])
 
     const openDropdownAndEmpty = () => {
+        document.getElementById("dropdownSearch").value = ""
         setIsOpen(true);
     }
 
