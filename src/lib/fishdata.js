@@ -20,3 +20,11 @@ export const getFishParameters = (id) => {
     return fishJson;
 }
   
+export const getFishNames = () => {
+    let fishNames = []
+    for (const [index, [key, value]] of Object.entries(Object.entries(fishData))) {
+        let fish = value.split("/")
+        fishNames.push([key, fish[0]])
+    }
+    return fishNames.sort()
+}

@@ -6,11 +6,12 @@ import FishCard from '../components/FishCard';
 import Checkbox from '../components/Checkbox';
 import GenericSlider from '../components/GenericSlider';
 import Layout from '../components/layout';
-import Accordion from '../components/Accordion'
-import Tooltip from '../components/Tooltip'
+import Accordion from '../components/Accordion';
+import Tooltip from '../components/Tooltip';
+import TargetedContainer from '../components/TargetedContainer';
 import { getFishFromLocationAndSeason } from '../lib/locationdata';
-import { getFishParameters } from '../lib/fishdata'; 
-import { getJellyChance, rollFishPool } from '../lib/calculateChance';
+import { getFishParameters, getFishNames } from '../lib/fishdata'; 
+import { getJellyChance, rollFishPool, targetedBaitSingle, rollFishPoolWithTargetedBait } from '../lib/calculateChance';
 
 export default function Home() {
   const [timeOfDay, setTimeOfDay] = useState(600);
@@ -30,6 +31,7 @@ export default function Home() {
     isTroutDerbyActive: false,
     isSquidFestActive: false,
     isUsingTrainingRod: false,
+    isUsingTargetedBait: false,
   });
 
   // update and pull Locations.xnb and Fish.xnb
@@ -39,6 +41,7 @@ export default function Home() {
   // update and only use stored data
   const [filteredFishData, setFilteredFishData] = useState([]);
   const [fishDataWithChance, setFishDataWithChance] = useState([]);
+  const fishNames = getFishNames().slice()
   
 
   // makes sure the fish window height doesn't overflow the main window
@@ -78,13 +81,16 @@ export default function Home() {
       if (!fish.Id || !fish.Id.match(/\d+/)) {
         if (fish.Id && fish.Id.match(/Jelly/)) {
           fish.name = fish.Id.substring(3, fish.Id.length-5)+" Jelly"
-          fish["weight"] = 0
+          fish.displayname = fish.name
+          fish.weight = 0
           tempFishParamArray.push(fish);
         }
         continue
       }
       const newParams = getFishParameters(fish.Id.match(/\d+/)[0]);
       const mergedParams = {...fish, ...newParams};
+      // name required as is for targeted bait, separate the parameters so displayname can be anything you want without interfering with targeted bait calculation
+      mergedParams.displayname = mergedParams.name
       tempFishParamArray.push(mergedParams);
     }
     setAppendedFishData(tempFishParamArray);
@@ -93,6 +99,10 @@ export default function Home() {
   // filter fish data using parameters
   useEffect(() => {
     let tempFilteredFishData = appendedFishData.slice()
+
+    // filter bobber position for now
+    let noBobberSpecification = tempFilteredFishData.filter((fish) => fish.BobberPosition === null)
+    tempFilteredFishData = noBobberSpecification
 
     // filter extended family
     if (!checkedItems.isExtendedFamilyActive) {
@@ -139,7 +149,7 @@ export default function Home() {
     if (checkedItems.isTroutDerbyActive) {
       let rainbowTrout = appendedFishData.filter((fish) =>
         fish.Condition && fish.Condition.includes("TroutDerby"))
-      if (rainbowTrout[0]) rainbowTrout[0].name = "Rainbow Trout (from event)"
+      if (rainbowTrout[0]) rainbowTrout[0].displayname = "Rainbow Trout (from event)"
       tempFilteredFishData.concat(rainbowTrout)
     } else {
       let noTroutDerbyTrout = tempFilteredFishData.filter((fish) => 
@@ -166,7 +176,9 @@ export default function Home() {
           squid[i].time = ["0600", "0600"]
         }
       }
-      for (let i in squid) {if (squid[i]) squid[i].name = "Squid (from event)"}
+      for (let i in squid) {
+        if (squid[i]) squid[i].displayname = "Squid (from event)"
+      }
       tempFilteredFishData.concat(squid)
     } else {
       let noSquidFestSquid = tempFilteredFishData.filter((fish) => 
@@ -205,33 +217,55 @@ export default function Home() {
       }
     }
 
-    if (filteredFishData.length > 0){
-      if (targetedBaitName === "") {
+    // get jelly chance
+    let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/));
+    if (jellyMode === "longterm") {
+      jelly && (jelly.weight = getJellyChance(filteredFishData, luckBuffs));
+    } else if (jellyMode === "nextcatch") {
+      jelly && (jelly.weight = jelly.Chance + jelly.ChanceBoostPerLuckLevel*luckBuffs);
+    } else if (jellyMode === "goodseed") {
+      jelly && (jelly.weight = 1);
+    } else if (jellyMode === "badseed") {
+      jelly && (jelly.weight = 0);
+    }
 
-        // get jelly chance
-        if (jellyMode === "longterm") {
-          let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
-          jelly && (jelly.weight = getJellyChance(filteredFishData, luckBuffs))
-        } else if (jellyMode === "nextcatch") {
-          let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
-          jelly && (jelly.weight = jelly.Chance + 0.05*luckBuffs)
-        } else if (jellyMode === "goodseed") {
-          let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
-          jelly && (jelly.weight = 1)
-        } else if (jellyMode === "badseed") {
-          let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
-          jelly && (jelly.weight = 0)
+    if (filteredFishData.length > 0) {
+      if (checkedItems.isUsingTargetedBait && selectedSeason != "MagicBait") {
+        let nonTargetedFish = filteredFishData.filter((fish) => !fish.name || fish.name != targetedBaitName)
+        let targetedFish = filteredFishData.filter((fish) => fish.name && fish.name == targetedBaitName)
+        let targetedBait = targetedBaitSingle(nonTargetedFish, targetedFish)
+        setTrashRate(targetedBait.caseAChance)
+
+        for (let i in nonTargetedFish) {
+          let fish = nonTargetedFish[i]
+          fish.finalChance = rollFishPoolWithTargetedBait(targetedBait, nonTargetedFish, i)
+          tempFishParamArray.push(fish);
         }
-  
+        
+        if (targetedFish.length > 1){
+          let fish = {
+            Id: targetedFish[0].Id,
+            displayname: targetedBaitName + " (multiple entries)",
+            finalChance: targetedBait.caseCChance
+          }
+          tempFishParamArray.push(fish);
+        } else {
+          for (let i in targetedFish) {
+            let fish = targetedFish[i]
+            fish.finalChance = targetedBait.caseCChance
+            tempFishParamArray.push(fish);
+          }
+        }
+      } else {
         for (let i in filteredFishData) {
           let fish = filteredFishData[i]
           fish.finalChance = rollFishPool(filteredFishData, i)
           tempTrashRate -= fish.finalChance
           tempFishParamArray.push(fish);
         }
+        setTrashRate(Math.max(0, tempTrashRate))
       }
   
-      setTrashRate(Math.max(0, tempTrashRate))
       tempFishParamArray.sort((a, b) => b.finalChance-a.finalChance)
       setFishDataWithChance(tempFishParamArray);
     } else {
@@ -282,12 +316,13 @@ export default function Home() {
       chanceFromLocationData = Math.min(1, Math.max(0, chanceFromLocationData))
       return chanceFromFishData * chanceFromLocationData;
     }
-  }, [filteredFishData, targetedBaitName, checkedItems.isCuriosityLureActive, jellyMode, luckBuffs])
+  }, [filteredFishData, targetedBaitName, checkedItems.isUsingTargetedBait, checkedItems.isCuriosityLureActive, jellyMode, luckBuffs])
 
   const handleTimeChange = (value) => setTimeOfDay(value);
   const handleFishingLevelChange = (value) => setFishingLevel(value);
   const handleDepthChange = (value) => setWaterDepth(value);
   const handleJellyModeChange = (value) => setJellyMode(value);
+  const handleTargetedBaitChange = (value) => setTargetedBaitName(value);
   const handleLuckBuffsChange = (value) => setLuckBuffs(value);
   const handleLocationChange = (value) => setSelectedLocation(value);
   const handleSeasonChange = (value) => setSelectedSeason(value);
@@ -469,8 +504,6 @@ export default function Home() {
                     value={luckBuffs}
                     onChange={handleLuckBuffsChange} 
                   />
-                </div>
-                <div>
                   <GenericSlider
                     title="Water Depth:"
                     min={0}
@@ -478,6 +511,21 @@ export default function Home() {
                     value={waterDepth}
                     onChange={handleDepthChange} 
                   />
+                </div>
+                <div>
+                  <TargetedContainer
+                    options={fishNames}
+                    onSelect={handleTargetedBaitChange}
+                    disabled={(selectedSeason == 'MagicBait') ? true : !checkedItems.isUsingTargetedBait}
+                  >
+                    <Checkbox
+                      label="Using targeted bait:"
+                      checked={(selectedSeason == 'MagicBait') ? false : checkedItems.isUsingTargetedBait}
+                      disabled={(selectedSeason == 'MagicBait') ? true : false}
+                      onChange={handleCheckboxChange}
+                      id="isUsingTargetedBait"
+                    /> 
+                  </TargetedContainer>
                   <Checkbox
                     label="Using curiosity lure"
                     onChange={handleCheckboxChange}
@@ -558,7 +606,7 @@ export default function Home() {
               return (
                 <FishCard
                   key={index}
-                  name={fish.name}
+                  name={fish.displayname}
                   chance={parseFloat(fish.finalChance*100).toFixed(2)+"%"}
                   // chance={Math.round(fish.finalChance*10000)/10000}
                   icon={iconPath}

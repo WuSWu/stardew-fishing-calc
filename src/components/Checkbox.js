@@ -1,4 +1,4 @@
-`useclient`
+'use client'
 import React from 'react';
 
 const Checkbox = ({ id, label, checked, onChange, disabled }) => {
@@ -12,7 +12,9 @@ const Checkbox = ({ id, label, checked, onChange, disabled }) => {
         disabled={disabled}
         className="form-checkbox h-5 w-5 text-blue-600"
       />
-      <span>{label}</span>
+      <div>
+        <span>{label}</span>
+      </div>
     </label>
   );
 };
