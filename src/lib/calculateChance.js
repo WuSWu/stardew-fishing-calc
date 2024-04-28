@@ -247,9 +247,21 @@ export function rollFishPoolWithTargetedBait(targetedBaitParameters, nonTargeted
         let pCatchExactly_1_FromHigherPrecedence = chanceOfNFishCaughtFromPool(1, recursedHigherPrecedence)
         let pCatchExactly_2_FromHigherPrecedence = chanceOfNFishCaughtFromPool(2, recursedHigherPrecedence)
 
-        finalChance += tbp.caseBFirstCatchChance * firstCatchChance * pCatchExactly_0_FromHigherPrecedence / (1 - tbp.pCatchExactly0)
-        finalChance += tbp.caseBSecondCatchChance * ((firstCatchChance * pCatchExactly_1_FromHigherPrecedence) + (secondCatchChance * pCatchExactly_0_FromHigherPrecedence)) / (1 - tbp.pCatchExactly0 - tbp.pCatchExactly1)
-        finalChance += tbp.caseBThirdCatchChance * ((firstCatchChance * pCatchExactly_2_FromHigherPrecedence) + (secondCatchChance * pCatchExactly_1_FromHigherPrecedence) + (thirdCatchChance * pCatchExactly_0_FromHigherPrecedence)) / (1 - tbp.pCatchExactly0 - tbp.pCatchExactly1 - tbp.pCatchExactly2)
+        let catch_1st = firstCatchChance * pCatchExactly_0_FromHigherPrecedence
+        let catch_2nd = ((firstCatchChance * pCatchExactly_1_FromHigherPrecedence) + (secondCatchChance * pCatchExactly_0_FromHigherPrecedence))
+        let catch_3rd = ((firstCatchChance * pCatchExactly_2_FromHigherPrecedence) + (secondCatchChance * pCatchExactly_1_FromHigherPrecedence) + (thirdCatchChance * pCatchExactly_0_FromHigherPrecedence))
+
+        if (catch_1st !== 0 && (1 - tbp.pCatchExactly0) !== 0) {
+            finalChance += tbp.caseBFirstCatchChance * catch_1st / (1 - tbp.pCatchExactly0)
+        }
+        if (catch_2nd !== 0 && (1 - tbp.pCatchExactly0 - tbp.pCatchExactly1) !== 0) {
+            finalChance += tbp.caseBSecondCatchChance * catch_2nd / (1 - tbp.pCatchExactly0 - tbp.pCatchExactly1)
+        }
+        if (catch_3rd !== 0 && (1 - tbp.pCatchExactly0 - tbp.pCatchExactly1 - tbp.pCatchExactly2) !== 0) {
+            finalChance += tbp.caseBThirdCatchChance * catch_3rd / (1 - tbp.pCatchExactly0 - tbp.pCatchExactly1 - tbp.pCatchExactly2)
+        }
+    
+        console.log
     } else {
         finalChance = wantedFishWeight
     }
