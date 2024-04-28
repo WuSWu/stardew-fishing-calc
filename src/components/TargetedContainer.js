@@ -54,6 +54,7 @@ const TargetedContainer = ({ options, onSelect, children, disabled }) => {
                 <div className={`h-full w-10 ${disabled ? "grayscale contrast-50" : ""}`}>
                     <img
                         src={img}
+                        alt={(selectedOption[1]) ? selectedOption[1] : "None selected"}
                         className="block size-10 z-20"
                         style={{imageRendering: 'pixelated'}}
                     />
@@ -76,6 +77,7 @@ const TargetedContainer = ({ options, onSelect, children, disabled }) => {
                 <ul className={`absolute left-0 z-10 w-full mt-2 max-h-48 bg-white border border-gray-300 overflow-auto rounded shadow-md ${isOpen ? '' : 'hidden'}`}>
                     {filteredOptions.map(([key, option], index) => (
                         <li className="px-4 py-2 hover:cursor-pointer hover:bg-gray-100"
+                            key={key}
                             type="string"
                             value={index}
                             onMouseDown={(e) => {e.preventDefault()}}
