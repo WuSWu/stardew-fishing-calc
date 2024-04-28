@@ -6,7 +6,7 @@ const TargetedContainer = ({ options, onSelect, children, disabled }) => {
     const [isSearchInvalid, setIsSearchInvalid] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedOption, setSelectedOption] = useState('');
-    const img = (selectedOption[0]) ? "/stardew-fishing-calc/assets/tile"+selectedOption[0]+".png" : null
+    const img = (selectedOption[0]) ? "/stardew-fishing-calc/assets/tile"+selectedOption[0]+".png" : "/stardew-fishing-calc/assets/tile691.png"
 
     const filteredOptions = (options !== undefined) ?
     options.filter(option => option[1].toLowerCase().includes(searchTerm.toLowerCase()))
@@ -27,6 +27,7 @@ const TargetedContainer = ({ options, onSelect, children, disabled }) => {
 
     const openDropdownAndEmpty = () => {
         document.getElementById("dropdownSearch").value = ""
+        setSearchTerm("");
         setIsOpen(true);
     }
 

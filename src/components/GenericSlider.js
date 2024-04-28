@@ -1,9 +1,9 @@
 'use client'
 import React from 'react';
 
-const GenericSlider = ({ title, min, max, value, onChange, disabled }) => {
+const GenericSlider = ({ title, min, max, value, onChange, disabled, snapInterval=1 }) => {
 
-    const snapValues = Array.from({length:101}, (_, index) => 0 + index);
+    const snapValues = Array.from({length:max-min+1}, (_, index) => min + snapInterval*index);
 
     const handleSliderChange = (e) => {
         const newValue = parseInt(e.target.value, 10);
