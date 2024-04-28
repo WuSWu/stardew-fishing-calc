@@ -328,10 +328,26 @@ export default function Home() {
   const handleSeasonChange = (value) => setSelectedSeason(value);
   const handleCheckboxChange = (event) => {
     const { id, checked } = event.target;
-    setCheckedItems({
-      ...checkedItems,
-      [id]: checked,
-    });
+  
+    const incompatibleCheckboxes = {
+      "isUsingTargetedBait": ["isUsingTrainingRod"],
+      "isUsingTrainingRod": ["isUsingTargetedBait"],
+    }
+  
+    const incompatibleIds = incompatibleCheckboxes[id];
+    if (incompatibleIds) {
+      const updatedCheckedItems = { ...checkedItems };
+      incompatibleIds.forEach(incompatibleId => {
+        updatedCheckedItems[incompatibleId] = false;
+      });
+      updatedCheckedItems[id] = checked;
+      setCheckedItems(updatedCheckedItems);
+    } else {
+      setCheckedItems({
+        ...checkedItems,
+        [id]: checked,
+      });
+    }
   };
   
   return (
@@ -493,7 +509,7 @@ export default function Home() {
                   <GenericSlider
                     title="Fishing Level:"
                     min={0}
-                    max={15}
+                    max={19}
                     value={fishingLevel}
                     onChange={handleFishingLevelChange} 
                   />
