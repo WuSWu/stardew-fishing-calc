@@ -260,8 +260,6 @@ export function rollFishPoolWithTargetedBait(targetedBaitParameters, nonTargeted
         if (catch_3rd !== 0 && (1 - tbp.pCatchExactly0 - tbp.pCatchExactly1 - tbp.pCatchExactly2) !== 0) {
             finalChance += tbp.caseBThirdCatchChance * catch_3rd / (1 - tbp.pCatchExactly0 - tbp.pCatchExactly1 - tbp.pCatchExactly2)
         }
-    
-        console.log
     } else {
         finalChance = wantedFishWeight
     }

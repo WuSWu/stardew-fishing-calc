@@ -26,5 +26,19 @@ export const getFishNames = () => {
         let fish = value.split("/")
         fishNames.push([key, fish[0]])
     }
-    return fishNames.sort()
+
+    let sortedFishNames = fishNames.sort((a, b) => {
+        const nameA = a[1].toLowerCase();
+        const nameB = b[1].toLowerCase();
+    
+        if (nameA < nameB) {
+            return -1;
+        }
+        if (nameA > nameB) {
+            return 1;
+        }
+        return 0;
+    });
+
+    return sortedFishNames;
 }
