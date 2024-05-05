@@ -51,7 +51,6 @@ export default function Home() {
   const [windowWidth, setWindowWidth] = useState(0);
   useEffect(() => {
     setWindowWidth(window.innerWidth)
-    console.log(windowWidth)
   }, []);
 
   // makes sure the fish window height doesn't overflow the main window
@@ -86,13 +85,14 @@ export default function Home() {
   // populate fish data with Fish.xnb if new location data is pulled
   useEffect(() => {
     let tempFishParamArray = []
-    let nonFishItems = ["(O)821", "(O)825"]
+    let nonFishItems = ["(O)821", "(O)825", "(O)797"]
     for (let i in locationFishData) {
       let fish = locationFishData[i]
       if (nonFishItems.includes(fish.Id) || fish.Id.includes("(F)")){
         switch(fish.Id){
           case "(O)821" : fish.displayname = "Fossilized Spine"; break;
           case "(O)825" : fish.displayname = "Snake Skull"; break;
+          case "(O)797" : fish.displayname = "Pearl"; break;
           case "(F)2332" : fish.displayname = "Gourmand Statue"; break;
           case "(F)2425" : fish.displayname = "Wall Basket"; break;
         }
@@ -129,7 +129,6 @@ export default function Home() {
     tempFilteredFishData = correctSubArea
 
     // filter bobber position
-    console.log(selectedBobberArea)
     let bobberDictionary = {
       "Waterfall": {"X": 51, "Y": 100, "Width": 15, "Height": 255},
       "SubmarinePier": {"X": 0, "Y": 32, "Width": 12, "Height": 255}
@@ -404,7 +403,8 @@ export default function Home() {
   
     const incompatibleCheckboxes = {
       "isUsingTargetedBait": ["isUsingTrainingRod"],
-      "isUsingTrainingRod": ["isUsingTargetedBait"],
+      "isUsingTrainingRod": ["isUsingTargetedBait", "isCuriosityLureActive"],
+      "isCuriosityLureActive": ["isUsingTrainingRod"],
     }
   
     const incompatibleIds = incompatibleCheckboxes[id];
@@ -412,6 +412,7 @@ export default function Home() {
       const updatedCheckedItems = { ...checkedItems };
       incompatibleIds.forEach(incompatibleId => {
         updatedCheckedItems[incompatibleId] = false;
+        console.log(incompatibleId)
       });
       updatedCheckedItems[id] = checked;
       setCheckedItems(updatedCheckedItems);
@@ -557,6 +558,18 @@ export default function Home() {
                         />
                       </BranchingOptions>
                     </div>
+                    <RadioOptions
+                      customIcon="/stardew-fishing-calc/assets/tiles/tile117.png"
+                      label="Submarine"
+                      deselectedColor="bg-white"
+                      selectedColor="bg-blue-300"
+                      checked={selectedLocation === 'Submarine'}
+                      onChange={() => {
+                        handleLocationChange('Submarine')
+                        handleSubAreaChange('')
+                        handleBobberAreaChange('')
+                      }}
+                    />
                     <div className="break-inside-avoid">
                       <BranchingOptions
                         customIcon="/stardew-fishing-calc/assets/tiles/tile372.png"
@@ -802,6 +815,7 @@ export default function Home() {
                     <div>
                       <Checkbox
                         label="Using curiosity lure"
+                        checked={checkedItems.isCuriosityLureActive}
                         onChange={handleCheckboxChange}
                         id="isCuriosityLureActive"
                       /> 
