@@ -47,6 +47,12 @@ export default function Home() {
   const fishNames = getFishNames()
   const locationAreas = getFishAreas()
   
+  // util to access window width client side
+  const [windowWidth, setWindowWidth] = useState(0);
+  useEffect(() => {
+    setWindowWidth(window.innerWidth)
+    console.log(windowWidth)
+  }, []);
 
   // makes sure the fish window height doesn't overflow the main window
   const fishDisplayWindow = useRef();
@@ -576,7 +582,7 @@ export default function Home() {
                           }}
                         />
                         <Tooltip
-                          direction={(window.innerWidth >= 640) ? "right" : "top"}
+                          direction={(windowWidth >= 640) ? "right" : "top"}
                           hoverArea={
                             <ChildrenOptions
                               label="West Pier"
