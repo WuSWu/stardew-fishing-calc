@@ -358,7 +358,7 @@ export default function Home() {
             chanceFromFishData = (0.68 * chanceFromFishData + 0.085);
           }
         }
-        if (targetedBaitName == fish.name && checkedItems.isUsingTargetedBait) {
+        if (targetedBaitName == fish.name && checkedItems.isUsingTargetedBait && selectedSeason != "MagicBait") {
           chanceFromFishData *= 1.66
         }
         if (fish.ApplyDailyLuck) {
@@ -374,7 +374,7 @@ export default function Home() {
           chanceFromLocationData += fish.CuriosityLureBuff
         }
       }
-      if (targetedBaitName === fish.name && checkedItems.isUsingTargetedBait) {
+      if (targetedBaitName === fish.name && checkedItems.isUsingTargetedBait&& selectedSeason != "MagicBait") {
         chanceFromLocationData *= fish.SpecificBaitMultiplier
         chanceFromLocationData += fish.SpecificBaitBuff
       }
