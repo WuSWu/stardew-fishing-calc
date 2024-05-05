@@ -14,10 +14,8 @@ const FishData = ({icon, name, chance}) => {
                 )}
             </div>
         <div className='grid auto-rows-auto'>
-            <span className="font-bold">
-                {name}
-            </span>
-            <span>{chance}</span>
+            <span className="text-sm font-bold">{name}</span>
+            <span className="text-sm">{chance}</span>
         </div>
     </div>
   );

@@ -11,6 +11,11 @@ module.exports = {
       height: {
         'custom': '80rem'
       },
+      zIndex: {
+        '1': '1',
+        '2': '2',
+        '3': '3'
+      },
       colors:{
         // 'blue': ''
       },

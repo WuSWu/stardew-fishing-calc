@@ -13,7 +13,7 @@ const Checkbox = ({ id, label, checked, onChange, disabled }) => {
         className="form-checkbox h-5 w-5 text-blue-600"
       />
       <div>
-        <span>{label}</span>
+        <span className="text-sm">{label}</span>
       </div>
     </label>
   );

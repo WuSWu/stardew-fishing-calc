@@ -20,8 +20,8 @@ const GenericSlider = ({ title, min, max, value, onChange, disabled, snapInterva
     return (
         <div className="mb-4">
             <div className="flex flex-row items-center justify-between mb-2">
-                <p className="text-base font-semibold">{title}</p>
-                <p className="px-2">{value}</p>
+                <p className="text-sm font-semibold">{title}</p>
+                <p className="text-sm px-2">{value}</p>
             </div>
             <input
                 type="range"

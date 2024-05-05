@@ -1,18 +1,59 @@
 .tooltipcontainer {
     position: relative;
     display: inline-block;
-    z-index: 2
+    z-index: 12
 }
 
 .icon {
     cursor: pointer;
 }
 
-.tooltip {
+.tooltipright {
     display: block;
     position: absolute;
-    z-index: 2;
-    bottom: calc(100% + 10px); /* Position below the icon */
+    z-index: 12;
+    left: calc(100% + 15px);
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #f9f9f9;
+    color: #000;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+
+.tooltipright::after {
+    content: '';
+    position: absolute;
+    z-index: 13;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-style: solid;
+    border-width: 10px;
+    border-color: transparent #f9f9f9 transparent transparent;
+}
+
+.tooltipright::before {
+    content: '';
+    position: absolute;
+    z-index: 11;
+    right: calc(100% + 1px);
+    top: 50%;
+    transform: translateY(-50%);
+    border-style: solid;
+    border-width: 10px;
+    border-color: transparent #ccc transparent transparent;
+}
+  
+
+.tooltiptop {
+    display: block;
+    position: absolute;
+    z-index: 12;
+    bottom: calc(100% + 15px);
     left: 50%;
     transform: translateX(-50%);
     background-color: #f9f9f9;
@@ -24,27 +65,27 @@
     white-space: nowrap;
 }
 
-.tooltip::after {
+.tooltiptop::after {
     content: '';
     position: absolute;
-    z-index: 3;
+    z-index: 13;
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
     border-style: solid;
-    border-width: 10px 10px 0;
-    border-color: #f9f9f9 transparent transparent;
+    border-width: 10px;
+    border-color: #f9f9f9 transparent transparent transparent;
 }
 
-.tooltip::before {
+.tooltiptop::before {
     content: '';
     position: absolute;
-    z-index: 1;
+    z-index: 11;
     top: calc(100% + 1px);
     left: 50%;
     transform: translateX(-50%);
     border-style: solid;
-    border-width: 10px 10px 0;
-    border-color: #ccc transparent transparent;
+    border-width: 10px;
+    border-color: #ccc transparent transparent transparent;
 }
   

@@ -57,7 +57,7 @@ const TimeSlider = ({ title, value, onChange, disabled }) => {
     <div className="mb-4">
         <div className="flex flex-row items-center justify-between mb-2">
             <p className="text-base font-bold">{title}</p>
-            <p className="px-2">{convertToTime(value)}</p>
+            <p className="text-sm px-2">{convertToTime(value)}</p>
         </div>
         <input
             type="range"

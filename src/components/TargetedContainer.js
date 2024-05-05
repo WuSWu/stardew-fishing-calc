@@ -6,7 +6,7 @@ const TargetedContainer = ({ options, onSelect, children, disabled }) => {
     const [isSearchInvalid, setIsSearchInvalid] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedOption, setSelectedOption] = useState('');
-    const img = (selectedOption[0]) ? "/stardew-fishing-calc/assets/tile"+selectedOption[0]+".png" : "/stardew-fishing-calc/assets/tile691.png"
+    const img = (selectedOption[0]) ? "/stardew-fishing-calc/assets/tiles/tile"+selectedOption[0]+".png" : "/stardew-fishing-calc/assets/tiles/tile691.png"
 
     const filteredOptions = (options !== undefined) ?
     options.filter(option => option[1].toLowerCase().includes(searchTerm.toLowerCase()))
@@ -50,7 +50,7 @@ const TargetedContainer = ({ options, onSelect, children, disabled }) => {
     };
 
     return (
-        <div className="flex flex-col rounded-lg border-gray-400 bg-gray-200 border-2 p-2 mb-2 gap-2">
+        <div className="flex flex-col rounded-lg border-gray-400 bg-gray-200 border-2 p-2 my-2 gap-2">
             {children}
             <div className='flex flex-row gap-4 px-6 py-2 place-items-center'>
                 <div className={`h-full w-10 ${disabled ? "grayscale contrast-50" : ""}`}>
@@ -69,7 +69,7 @@ const TargetedContainer = ({ options, onSelect, children, disabled }) => {
                 <input
                     id="dropdownSearch"
                     placeholder="Search fish"
-                    className={`px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 ${(selectedOption[1]) ? "text-black" : "text-gray-600"}`}
+                    className={`text-sm px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 ${(selectedOption[1]) ? "text-black" : "text-gray-600"}`}
                     onClick={openDropdownAndEmpty}
                     onFocus={openDropdown}
                     onBlur={closeDropdown}
@@ -78,7 +78,7 @@ const TargetedContainer = ({ options, onSelect, children, disabled }) => {
                 />
                 <ul className={`absolute left-0 z-10 w-full mt-2 max-h-48 bg-white border border-gray-300 overflow-auto rounded shadow-md ${isOpen ? '' : 'hidden'}`}>
                     {filteredOptions.map(([key, option], index) => (
-                        <li className="px-4 py-2 hover:cursor-pointer hover:bg-gray-100"
+                        <li className="text-sm px-4 py-2 hover:cursor-pointer hover:bg-gray-100"
                             key={key}
                             type="string"
                             value={index}
@@ -86,7 +86,7 @@ const TargetedContainer = ({ options, onSelect, children, disabled }) => {
                             onClick={handleOptionSelect}
                         >{option}</li>
                     ))}
-                    <li className={`px-4 py-2 bg-gray-100 ${isSearchInvalid ? '' : 'hidden'}`}>No results</li>
+                    <li className={`text-sm px-4 py-2 bg-gray-100 ${isSearchInvalid ? '' : 'hidden'}`}>No results</li>
                 </ul>
             </div>
         </div>

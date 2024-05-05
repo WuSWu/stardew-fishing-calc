@@ -2,6 +2,9 @@
 import fishData from '../data/Fish.json';
 
 export const getFishParameters = (id) => {
+    if (!fishData[id]){
+        return null
+    }
     const fishArray = fishData[id].split("/");
     const fishJson = {
         name: fishArray[0],

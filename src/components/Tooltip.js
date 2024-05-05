@@ -1,8 +1,25 @@
 import React, { useState } from 'react';
-import styles from './Tooltip.module.css'; // Import CSS file for styling
+import styles from './Tooltip.module.css';
 
-const Tooltip = ({ id, children }) => {
+const Tooltip = ({ id, img, hoverArea, tooltip, direction }) => {
   const [isHovered, setIsHovered] = useState(false);
+  var tooltipstyle = null
+  switch(direction){
+    case "top": 
+      tooltipstyle = styles.tooltiptop;
+      break;
+    case "right": 
+      tooltipstyle = styles.tooltipright;
+      break;
+    case "left": 
+      tooltipstyle = styles.tooltipleft;
+      break;
+    case "bottom": 
+      tooltipstyle = styles.tooltipbottom;
+      break;
+    default:
+      tooltipstyle = styles.tooltiptop;
+  }
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -13,17 +30,25 @@ const Tooltip = ({ id, children }) => {
   };
 
   return (
-    <div className={styles.tooltipcontainer}>
+    <div className={`${styles.tooltipcontainer} ${(!img) ? "w-full" : ""}`}>
       <span
         className={styles.icon}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        ℹ️
+        {hoverArea}
+        {img && (
+          <img
+            src={img}
+            alt={"tooltip"}
+            className="block size-6"
+            style={{imageRendering: 'pixelated'}}
+          />
+        )}
       </span>
       {isHovered && (
-        <div className={styles.tooltip} id={`tooltip-${id}`}>
-          {children}
+        <div className={tooltipstyle} id={`tooltip-${id}`}>
+          {tooltip}
         </div>
       )}
     </div>
