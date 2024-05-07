@@ -1,10 +1,17 @@
 .fadeout {
-  width: 0;
-  height: 0;
+  width: 150%;
+  height: 150%;
   opacity: 0;
-  transition: width 0.5s ease, height 0.5s ease, opacity 0.2s ease;
+  transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+}
+
+.hovered {
+  width: 80%;
+  height: 80%;
+  opacity: 0.2;
+  transition: width 0.2s ease, height 0.2s ease, opacity 0.1s ease;
 }
   
 .fadeout.checked {
-  opacity: 0.5;
+  opacity: 1;
 }

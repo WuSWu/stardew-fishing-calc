@@ -443,6 +443,7 @@ export default function Home() {
                       label="Spring"
                       deselectedColor="bg-white"
                       selectedColor="bg-green-300"
+                      hoverColor="bg-green-100"
                       checked={selectedSeason === 'spring'}
                       onChange={() => handleSeasonChange('spring')}
                     />
@@ -451,6 +452,7 @@ export default function Home() {
                       label="Summer"
                       deselectedColor="bg-white"
                       selectedColor="bg-green-300"
+                      hoverColor="bg-green-100"
                       checked={selectedSeason === 'summer'}
                       onChange={() => handleSeasonChange('summer')}
                     />
@@ -459,6 +461,7 @@ export default function Home() {
                       label="Fall"
                       deselectedColor="bg-white"
                       selectedColor="bg-green-300"
+                      hoverColor="bg-green-100"
                       checked={selectedSeason === 'fall'}
                       onChange={() => handleSeasonChange('fall')}
                     />
@@ -467,6 +470,7 @@ export default function Home() {
                       label="Winter"
                       deselectedColor="bg-white"
                       selectedColor="bg-green-300"
+                      hoverColor="bg-green-100"
                       checked={selectedSeason === 'winter'}
                       onChange={() => handleSeasonChange('winter')}
                     />
@@ -475,6 +479,7 @@ export default function Home() {
                       label="Magic Bait"
                       deselectedColor="bg-white"
                       selectedColor="bg-green-300"
+                      hoverColor="bg-green-100"
                       checked={selectedSeason === 'MagicBait'}
                       onChange={() => handleSeasonChange('MagicBait')}
                     />
