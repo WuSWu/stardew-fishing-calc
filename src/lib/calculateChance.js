@@ -356,6 +356,7 @@ function getNonTargetedChance(samePrecedence, higherPrecedence, chanceOfFishYouW
 // 
 // this function takes the trashChance and outputs the jelly coefficient. trashChance includes algae and seaweed.
 // run this after everything (including targeted bait calculation)
+export const nonFishItems = ["(O)821", "(O)825", "(O)797", "(F)2332", "(F)2425"]
 export function getJellyChance(filteredFishData, luckBuffs) {
     let jelly = filteredFishData.find((jelly) => jelly.Id && jelly.Id.match(/Jelly/))
     let jellyRate = jelly.Chance + 0.05*luckBuffs
@@ -367,7 +368,7 @@ export function getJellyChance(filteredFishData, luckBuffs) {
     let trashTrashWithJellyRate = 1
     jellyInModifiedPool.weight = 1
     for (let i in modifiedPool) {
-        if (modifiedPool[i].Id === "(O)152" || modifiedPool[i].Id === "(O)153" || modifiedPool[i].Id === "(O)157") {
+        if (nonFishItems.includes(modifiedPool[i].Id) || ["(O)152", "(O)153", "(O)157"].includes(modifiedPool[i].Id)) {
             let currentFinalChance = rollFishPool(modifiedPool, i)
             trashFishWithJellyRate += currentFinalChance
         }
@@ -381,7 +382,7 @@ export function getJellyChance(filteredFishData, luckBuffs) {
     let trashTrashWithoutJellyRate = 1
     jellyInModifiedPool.weight = 0
     for (let i in modifiedPool) {
-        if (modifiedPool[i].Id === "(O)152" || modifiedPool[i].Id === "(O)153" || modifiedPool[i].Id === "(O)157") {
+        if (nonFishItems.includes(modifiedPool[i].Id) || ["(O)152", "(O)153", "(O)157"].includes(modifiedPool[i].Id)) {
             let currentFinalChance = rollFishPool(modifiedPool, i)
             trashFishWithoutJellyRate += currentFinalChance
         }

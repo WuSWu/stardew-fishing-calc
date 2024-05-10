@@ -11,7 +11,7 @@ import Tooltip from '../components/Tooltip';
 import TargetedContainer from '../components/TargetedContainer';
 import { getFishFromLocationAndSeason, getFishAreas } from '../lib/locationdata';
 import { getFishParameters, getFishNames } from '../lib/fishdata'; 
-import { getJellyChance, rollFishPool, targetedBaitSingle, rollFishPoolWithTargetedBait } from '../lib/calculateChance';
+import { nonFishItems, getJellyChance, rollFishPool, targetedBaitSingle, rollFishPoolWithTargetedBait } from '../lib/calculateChance';
 const _ = require("lodash"); 
 
 export default function Home() {
@@ -85,7 +85,6 @@ export default function Home() {
   // populate fish data with Fish.xnb if new location data is pulled
   useEffect(() => {
     let tempFishParamArray = []
-    let nonFishItems = ["(O)821", "(O)825", "(O)797"]
     for (let i in locationFishData) {
       let fish = locationFishData[i]
       if (nonFishItems.includes(fish.Id) || fish.Id.includes("(F)")){
@@ -801,7 +800,7 @@ export default function Home() {
                           <GenericSlider
                             title="Luck Buff Level:"
                             min={0}
-                            max={8}
+                            max={13}
                             value={luckBuffs}
                             onChange={handleLuckBuffsChange} 
                           />
