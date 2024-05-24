@@ -318,7 +318,7 @@ export default function Home() {
       // handle OR fish (like submarine pier)
       let orFish = []
       for (let i in tempFishParamArray) {
-        let fish = filteredFishData[i]
+        let fish = tempFishParamArray[i]
         if (fish.Id.includes("|")) {
           let orFishId = fish.Id.split("|")
           fish.finalChance /= orFishId.length
