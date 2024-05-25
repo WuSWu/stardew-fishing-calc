@@ -18,10 +18,11 @@ export default function Home() {
   const [timeOfDay, setTimeOfDay] = useState(600);
   const [fishingLevel, setFishingLevel] = useState(10);
   const [waterDepth, setWaterDepth] = useState(5);
-  const [selectedLocation, setSelectedLocation] = useState('Town');
+  const [selectedLocation, setSelectedLocation] = useState('Beach');
   const [selectedSeason, setSelectedSeason] = useState('spring');
   const [selectedSubArea, setSelectedSubArea] = useState("");
   const [selectedBobberArea, setSelectedBobberArea] = useState("");
+  const [selectedMineArea, setSelectedMineArea] = useState("");
   const [targetedBaitName, setTargetedBaitName] = useState("");
   const [trashRate, setTrashRate] = useState(1);
   const [jellyMode, setJellyMode] = useState("longterm");
@@ -118,79 +119,79 @@ export default function Home() {
 
   // filter fish data using parameters
   useEffect(() => {
-    let tempFilteredFishData = appendedFishData.slice()
+    let tempFishParamArray = appendedFishData.slice()
 
     // filter sub area
-    let correctSubArea = tempFilteredFishData
+    let correctSubArea = tempFishParamArray
       .filter((fish) =>
         selectedSubArea == null
         || (!fish.FishAreaId || fish.FishAreaId === selectedSubArea));
-    tempFilteredFishData = correctSubArea
+    tempFishParamArray = correctSubArea
 
     // filter bobber position
     let bobberDictionary = {
       "Waterfall": {"X": 51, "Y": 100, "Width": 15, "Height": 255},
       "SubmarinePier": {"X": 0, "Y": 32, "Width": 12, "Height": 255}
     }
-    let filterBobber = tempFilteredFishData
+    let filterBobber = tempFishParamArray
       .filter((fish) =>
         (!fish.BobberPosition)
         || _.isEqual(bobberDictionary[selectedBobberArea], fish.BobberPosition)
       )
-    tempFilteredFishData = filterBobber
+    tempFishParamArray = filterBobber
 
     // filter player position for now, flex tape
-    let noPlayerPosition = tempFilteredFishData
+    let noPlayerPosition = tempFishParamArray
       .filter((fish) =>
         fish.PlayerPosition === null
         || (fish.Condition && fish.Condition.includes("LEGENDARY_FAMILY")));
-    tempFilteredFishData = noPlayerPosition
+    tempFishParamArray = noPlayerPosition
 
     // also flex tape, filter PLAYER_HAS_MAIL for now
-    let noPlayerMailCondition = tempFilteredFishData
+    let noPlayerMailCondition = tempFishParamArray
       .filter((fish) =>
         !fish.Condition || !fish.Condition.includes("PLAYER_HAS_MAIL"));
-    tempFilteredFishData = noPlayerMailCondition
+    tempFishParamArray = noPlayerMailCondition
 
     // filter extended family
     if (!checkedItems.isExtendedFamilyActive) {
-      let noExtendedFamily = tempFilteredFishData
+      let noExtendedFamily = tempFishParamArray
         .filter((fish) => !fish.Condition || !fish.Condition.includes("LEGENDARY_FAMILY"));
-      tempFilteredFishData = noExtendedFamily
+      tempFishParamArray = noExtendedFamily
       };
 
     // filter training rod
     if (checkedItems.isUsingTrainingRod && selectedSeason != "MagicBait"){
-      let setDifficultyCeiling = tempFilteredFishData
+      let setDifficultyCeiling = tempFishParamArray
         .filter((fish) => !fish.difficulty || fish.difficulty < 50);
-      tempFilteredFishData = setDifficultyCeiling
+      tempFishParamArray = setDifficultyCeiling
     }
 
     // filter fishing level requirements
-    let fishingHighEnough = tempFilteredFishData
+    let fishingHighEnough = tempFishParamArray
       .filter((fish) => 
         (!fish.requiredLevel || fish.IgnoreFishDataRequirements || fish.requiredLevel <= fishingLevel)
         && (fish.MinFishingLevel <= fishingLevel ));
-    tempFilteredFishData = fishingHighEnough;
+    tempFishParamArray = fishingHighEnough;
 
     // filter raining
     if (selectedSeason != "MagicBait") {
       if (checkedItems.isRaining) {
-        let raining = tempFilteredFishData
+        let raining = tempFishParamArray
           .filter((fish) => !(fish.weather == "sunny") || fish.IgnoreFishDataRequirements);
-        tempFilteredFishData = raining
+        tempFishParamArray = raining
       } else {
-        let sunny = tempFilteredFishData
+        let sunny = tempFishParamArray
           .filter((fish) => !(fish.weather == "rainy") || fish.IgnoreFishDataRequirements);
-        tempFilteredFishData = sunny
+        tempFishParamArray = sunny
       }
     }
 
     // filter shore distances
-    let distance = tempFilteredFishData.filter((fish) =>
+    let distance = tempFishParamArray.filter((fish) =>
       (fish.MaxDistanceFromShore <= -1 || waterDepth <= fish.MaxDistanceFromShore) 
       && (waterDepth >= fish.MinDistanceFromShore))
-    tempFilteredFishData = distance
+    tempFishParamArray = distance
 
     // trout derby
     // must be after raining and before time
@@ -198,12 +199,12 @@ export default function Home() {
       let rainbowTrout = appendedFishData.filter((fish) =>
         fish.Condition && fish.Condition.includes("TroutDerby"))
       if (rainbowTrout[0]) rainbowTrout[0].displayname = "Rainbow Trout (from event)"
-      tempFilteredFishData.concat(rainbowTrout)
+      tempFishParamArray.concat(rainbowTrout)
     } else {
-      let noTroutDerbyTrout = tempFilteredFishData.filter((fish) => 
+      let noTroutDerbyTrout = tempFishParamArray.filter((fish) => 
       !fish.Condition ||
       (fish.Condition && !fish.Condition.includes("TroutDerby")))
-      tempFilteredFishData = noTroutDerbyTrout
+      tempFishParamArray = noTroutDerbyTrout
     }
 
     // squid fest
@@ -227,17 +228,17 @@ export default function Home() {
       for (let i in squid) {
         if (squid[i]) squid[i].displayname = "Squid (from event)"
       }
-      tempFilteredFishData.concat(squid)
+      tempFishParamArray.concat(squid)
     } else {
-      let noSquidFestSquid = tempFilteredFishData.filter((fish) => 
+      let noSquidFestSquid = tempFishParamArray.filter((fish) => 
       !fish.Condition ||
       (fish.Condition && !fish.Condition.includes("SquidFest")))
-      tempFilteredFishData = noSquidFestSquid
+      tempFishParamArray = noSquidFestSquid
     }
 
     // filter times
     if (selectedSeason != "MagicBait") {
-      let timeFilter = tempFilteredFishData
+      let timeFilter = tempFishParamArray
       .filter((fish) =>
         (!fish.time || fish.IgnoreFishDataRequirements && (!fish.Condition || !fish.Condition.includes("TIME")))
         || 
@@ -247,10 +248,10 @@ export default function Home() {
         // double window fish
         (fish.time.length == 4 &&
         fish.time[2] <= timeOfDay && fish.time[3] > timeOfDay))
-      tempFilteredFishData = timeFilter
+      tempFishParamArray = timeFilter
     }
 
-    setFilteredFishData(tempFilteredFishData)
+    setFilteredFishData(tempFishParamArray)
   }, [appendedFishData, selectedBobberArea, selectedSubArea, timeOfDay, checkedItems.isUsingTrainingRod, waterDepth, checkedItems.isExtendedFamilyActive, checkedItems.isRaining, checkedItems.isTroutDerbyActive, checkedItems.isSquidFestActive, fishingLevel])
 
   // calculate chances
@@ -283,7 +284,8 @@ export default function Home() {
         let nonTargetedFish = filteredFishData.filter((fish) => !fish.name || fish.name != targetedBaitName)
         let targetedFish = filteredFishData.filter((fish) => fish.name && fish.name == targetedBaitName)
         let targetedBait = targetedBaitSingle(nonTargetedFish, targetedFish)
-        setTrashRate(targetedBait.caseAChance)
+        tempTrashRate = targetedBait.caseAChance
+        setTrashRate(tempTrashRate)
 
         for (let i in nonTargetedFish) {
           let fish = nonTargetedFish[i]
@@ -333,9 +335,73 @@ export default function Home() {
           orFish.push(fish);
         }
       }
+      tempFishParamArray = orFish
+
+      // handle UndergroundMine
+      if (selectedLocation == "UndergroundMine") {
+        let caveJellyChance = 0
+        let floorFishChance = 0
+        if (!checkedItems.isUsingTrainingRod) {
+          let chanceMultiplier = 1
+          chanceMultiplier += 0.4 * fishingLevel
+          chanceMultiplier += 0.1 * waterDepth
+          chanceMultiplier += (checkedItems.isCuriosityLureActive) ? 5 : 0
+          let mineFish = {
+            Id: null,
+            displayname: null,
+            finalChance: 0
+          } 
+          switch (selectedMineArea) {
+            case "20":
+              chanceMultiplier += (checkedItems.isUsingTargetedBait && targetedBaitName=="Stonefish") ? 10 : 0
+              console.log(fishingLevel, chanceMultiplier)
+              floorFishChance = 0.02 + 0.01 * chanceMultiplier
+              mineFish["Id"] = "(O)158"
+              mineFish["displayname"] = "Stonefish"
+              mineFish["finalChance"] = floorFishChance
+              break;
+            case "60":
+              chanceMultiplier += (checkedItems.isUsingTargetedBait && targetedBaitName=="Ice Pip") ? 10 : 0
+              floorFishChance = 0.015 + 0.009 * chanceMultiplier
+              mineFish["Id"] = "(O)161"
+              mineFish["displayname"] = "Ice Pip"
+              mineFish["finalChance"] = floorFishChance
+              break;
+            case "100":
+              chanceMultiplier += (checkedItems.isUsingTargetedBait && targetedBaitName=="Lava Eel") ? 10 : 0
+              floorFishChance = 0.01 + 0.008 * chanceMultiplier
+              mineFish["Id"] = "(O)162"
+              mineFish["displayname"] = "Lava Eel"
+              mineFish["finalChance"] = floorFishChance
+              caveJellyChance = 0.05 + 0.05 * luckBuffs
+              break;
+          }
+          if (selectedMineArea == "100") {
+            let mineFishArray = []
+            mineFishArray.push(mineFish)
+            let caveJelly = {
+              Id: "(O)CaveJelly",
+              displayname: "Cave Jelly",
+              finalChance: caveJellyChance * (1 - floorFishChance)
+            }
+            mineFishArray.push(caveJelly)
+            tempFishParamArray = mineFishArray
+            setTrashRate(1 - floorFishChance - caveJellyChance)
+          } else {
+            for (let i in tempFishParamArray) {
+              tempFishParamArray[i]["finalChance"] *= (1 - floorFishChance)
+            }
+            tempFishParamArray.push(mineFish)
+            setTrashRate(tempTrashRate * (1 - floorFishChance))
+          }
+        } else {
+          tempFishParamArray = []
+          setTrashRate(1)
+        }
+      }
         
-      orFish.sort((a, b) => b.finalChance-a.finalChance)
-      setFishDataWithChance(orFish);
+      tempFishParamArray.sort((a, b) => b.finalChance-a.finalChance)
+      setFishDataWithChance(tempFishParamArray);
     } else {
       setFishDataWithChance([])
     }
@@ -385,7 +451,7 @@ export default function Home() {
       chanceFromLocationData = Math.min(1, Math.max(0, chanceFromLocationData))
       return chanceFromFishData * chanceFromLocationData;
     }
-  }, [filteredFishData, targetedBaitName, checkedItems.isUsingTargetedBait, checkedItems.isCuriosityLureActive, jellyMode, luckBuffs])
+  }, [filteredFishData, targetedBaitName, checkedItems.isUsingTargetedBait, checkedItems.isCuriosityLureActive, jellyMode, luckBuffs, selectedMineArea])
 
   const handleTimeChange = (value) => setTimeOfDay(value);
   const handleFishingLevelChange = (value) => setFishingLevel(value);
@@ -396,6 +462,7 @@ export default function Home() {
   const handleLocationChange = (value) => setSelectedLocation(value);
   const handleSubAreaChange = (value) => setSelectedSubArea(value);
   const handleBobberAreaChange = (value) => setSelectedBobberArea(value);
+  const handleMineAreaChange = (value) => setSelectedMineArea(value);
   const handleSeasonChange = (value) => setSelectedSeason(value);
   const handleCheckboxChange = (event) => {
     const { id, checked } = event.target;
@@ -411,7 +478,6 @@ export default function Home() {
       const updatedCheckedItems = { ...checkedItems };
       incompatibleIds.forEach(incompatibleId => {
         updatedCheckedItems[incompatibleId] = false;
-        console.log(incompatibleId)
       });
       updatedCheckedItems[id] = checked;
       setCheckedItems(updatedCheckedItems);
@@ -490,90 +556,6 @@ export default function Home() {
                 <div className="shrink rounded-lg bg-blue-200 text-blue-700 p-2">
                   <p className="lg:text-lg md:text-base font-bold mb-2">Fishing Location</p>
                   <div className="columns-3 md:columns-5 space-y-2 gap-2">
-                    <RadioOptions
-                      customIcon="/stardew-fishing-calc/assets/tiles/tile325.png"
-                      label="Pelican Town"
-                      deselectedColor="bg-white"
-                      selectedColor="bg-blue-300"
-                      checked={selectedLocation === 'Town'}
-                      onChange={() => {
-                        handleLocationChange('Town')
-                        handleSubAreaChange('')
-                        handleBobberAreaChange('')
-                      }}
-                      />
-                    <RadioOptions
-                      customIcon="/stardew-fishing-calc/assets/tiles/tile032.png"
-                      label="Mountain Lake"
-                      deselectedColor="bg-white"
-                      selectedColor="bg-blue-300"
-                      checked={selectedLocation === 'Mountain'}
-                      onChange={() => {
-                        handleLocationChange('Mountain')
-                        handleSubAreaChange('')
-                        handleBobberAreaChange('')
-                      }}
-                    />
-                    <div className="break-inside-avoid">
-                      <BranchingOptions
-                        customIcon="/stardew-fishing-calc/assets/tiles/tile311.png"
-                        label="Cindersap Forest"
-                        deselectedColor="bg-white"
-                        selectedColor="bg-blue-300"
-                        checked={selectedLocation === 'Forest'}
-                        onChange={() => {
-                          if (selectedLocation !== 'Forest') handleSubAreaChange('River')
-                          if (selectedLocation !== 'Forest') handleBobberAreaChange('')
-                          handleLocationChange('Forest')
-                        }}
-                      >
-                        <ChildrenOptions
-                          label="River"
-                          deselectedColor="bg-white"
-                          selectedColor="bg-blue-300"
-                          checked={selectedSubArea === 'River' && selectedBobberArea !== "Waterfall"}
-                          onChange={() => {
-                            handleLocationChange('Forest')
-                            handleSubAreaChange('River')
-                            handleBobberAreaChange('')
-                          }}
-                        />
-                        <ChildrenOptions
-                          label="Pond"
-                          deselectedColor="bg-white"
-                          selectedColor="bg-blue-300"
-                          checked={selectedSubArea === 'Lake'}
-                          onChange={() => {
-                            handleLocationChange('Forest')
-                            handleSubAreaChange('Lake')
-                            handleBobberAreaChange('')
-                          }}
-                        />
-                        <ChildrenOptions
-                          label="Waterfall"
-                          deselectedColor="bg-white"
-                          selectedColor="bg-blue-300"
-                          checked={selectedBobberArea === 'Waterfall'}
-                          onChange={() => {
-                            handleLocationChange('Forest')
-                            handleSubAreaChange('River')
-                            handleBobberAreaChange('Waterfall')
-                          }}
-                        />
-                      </BranchingOptions>
-                    </div>
-                    <RadioOptions
-                      customIcon="/stardew-fishing-calc/assets/tiles/tile117.png"
-                      label="Submarine"
-                      deselectedColor="bg-white"
-                      selectedColor="bg-blue-300"
-                      checked={selectedLocation === 'Submarine'}
-                      onChange={() => {
-                        handleLocationChange('Submarine')
-                        handleSubAreaChange('')
-                        handleBobberAreaChange('')
-                      }}
-                    />
                     <div className="break-inside-avoid">
                       <BranchingOptions
                         customIcon="/stardew-fishing-calc/assets/tiles/tile372.png"
@@ -585,6 +567,7 @@ export default function Home() {
                           handleLocationChange('Beach')
                           handleSubAreaChange('')
                           handleBobberAreaChange('')
+                          handleMineAreaChange('')
                         }}
                       >
                         <ChildrenOptions
@@ -596,6 +579,7 @@ export default function Home() {
                             handleLocationChange('Beach')
                             handleSubAreaChange('')
                             handleBobberAreaChange('')
+                            handleMineAreaChange('')
                           }}
                         />
                         <Tooltip
@@ -610,6 +594,7 @@ export default function Home() {
                                 handleLocationChange('Beach')
                                 handleSubAreaChange('')
                                 handleBobberAreaChange('SubmarinePier')
+                                handleMineAreaChange('')
                               }}
                             />
                           }
@@ -618,15 +603,159 @@ export default function Home() {
                       </BranchingOptions>
                     </div>
                     <RadioOptions
-                      customIcon="/stardew-fishing-calc/assets/tiles/tile308.png"
-                      label="Witch Swamp"
+                      customIcon="/stardew-fishing-calc/assets/tiles/tile117.png"
+                      label="Submarine"
                       deselectedColor="bg-white"
                       selectedColor="bg-blue-300"
-                      checked={selectedLocation === 'WitchSwamp'}
+                      checked={selectedLocation === 'Submarine'}
                       onChange={() => {
-                        handleLocationChange('WitchSwamp')
+                        handleLocationChange('Submarine')
                         handleSubAreaChange('')
                         handleBobberAreaChange('')
+                        handleMineAreaChange('')
+                      }}
+                    />
+                    <RadioOptions
+                      customIcon="/stardew-fishing-calc/assets/tiles/tile032.png"
+                      label="Mountain Lake"
+                      deselectedColor="bg-white"
+                      selectedColor="bg-blue-300"
+                      checked={selectedLocation === 'Mountain'}
+                      onChange={() => {
+                        handleLocationChange('Mountain')
+                        handleSubAreaChange('')
+                        handleBobberAreaChange('')
+                        handleMineAreaChange('')
+                      }}
+                    />
+                    <div className="break-inside-avoid">
+                      <BranchingOptions
+                        customIcon="/stardew-fishing-calc/assets/tiles/tilePickaxe.png"
+                        label="Mines"
+                        deselectedColor="bg-white"
+                        selectedColor="bg-blue-300"
+                        checked={selectedLocation === 'UndergroundMine'}
+                        onChange={() => {
+                          handleLocationChange('UndergroundMine')
+                          handleSubAreaChange('')
+                          handleBobberAreaChange('')
+                          handleMineAreaChange('20')
+                        }}
+                      >
+                        <ChildrenOptions
+                          label="Floor 20"
+                          deselectedColor="bg-white"
+                          selectedColor="bg-blue-300"
+                          checked={selectedMineArea === '20'}
+                          onChange={() => {
+                            handleLocationChange('UndergroundMine')
+                            handleSubAreaChange('')
+                            handleBobberAreaChange('')
+                            handleMineAreaChange('20')
+                          }}
+                        />
+                        <ChildrenOptions
+                          label="Floor 60"
+                          deselectedColor="bg-white"
+                          selectedColor="bg-blue-300"
+                          checked={selectedMineArea === '60'}
+                          onChange={() => {
+                            handleLocationChange('UndergroundMine')
+                            handleSubAreaChange('')
+                            handleBobberAreaChange('')
+                            handleMineAreaChange('60')
+                          }}
+                        />
+                        <ChildrenOptions
+                          label="Floor 100"
+                          deselectedColor="bg-white"
+                          selectedColor="bg-blue-300"
+                          checked={selectedMineArea === '100'}
+                          onChange={() => {
+                            handleLocationChange('UndergroundMine')
+                            handleSubAreaChange('')
+                            handleBobberAreaChange('')
+                            handleMineAreaChange('100')
+                          }}
+                        />
+                      </BranchingOptions>
+                    </div>
+                    <div className="break-inside-avoid">
+                      <BranchingOptions
+                        customIcon="/stardew-fishing-calc/assets/tiles/tile311.png"
+                        label="Cindersap Forest"
+                        deselectedColor="bg-white"
+                        selectedColor="bg-blue-300"
+                        checked={selectedLocation === 'Forest'}
+                        onChange={() => {
+                          handleSubAreaChange('River')
+                          handleBobberAreaChange('')
+                          handleLocationChange('Forest')
+                          handleMineAreaChange('')
+                        }}
+                      >
+                        <ChildrenOptions
+                          label="River"
+                          deselectedColor="bg-white"
+                          selectedColor="bg-blue-300"
+                          checked={selectedSubArea === 'River' && selectedBobberArea !== "Waterfall"}
+                          onChange={() => {
+                            handleLocationChange('Forest')
+                            handleSubAreaChange('River')
+                            handleBobberAreaChange('')
+                            handleMineAreaChange('')
+                          }}
+                        />
+                        <ChildrenOptions
+                          label="Pond"
+                          deselectedColor="bg-white"
+                          selectedColor="bg-blue-300"
+                          checked={selectedSubArea === 'Lake'}
+                          onChange={() => {
+                            handleLocationChange('Forest')
+                            handleSubAreaChange('Lake')
+                            handleBobberAreaChange('')
+                            handleMineAreaChange('')
+                          }}
+                        />
+                        <ChildrenOptions
+                          label="Waterfall"
+                          deselectedColor="bg-white"
+                          selectedColor="bg-blue-300"
+                          checked={selectedBobberArea === 'Waterfall'}
+                          onChange={() => {
+                            handleLocationChange('Forest')
+                            handleSubAreaChange('River')
+                            handleBobberAreaChange('Waterfall')
+                            handleMineAreaChange('')
+                          }}
+                        />
+                      </BranchingOptions>
+                    </div>
+                    <RadioOptions
+                      customIcon="/stardew-fishing-calc/assets/tiles/tile709.png"
+                      label="Secret Woods"
+                      deselectedColor="bg-white"
+                      selectedColor="bg-blue-300"
+                      checked={selectedLocation === 'Woods'}
+                      onChange={() => {
+                      handleLocationChange('Woods')
+                      handleSubAreaChange('')
+                      handleBobberAreaChange('')
+                      handleMineAreaChange('')
+                    }}
+                    />
+                    <RadioOptions
+                      customIcon="/stardew-fishing-calc/assets/tiles/tile325.png"
+                      label="Pelican Town"
+                      deselectedColor="bg-white"
+                      selectedColor="bg-blue-300"
+                      checked={selectedLocation === 'Town'}
+                      onChange={() => {
+                        handleLocationChange('Town')
+                        handleSubAreaChange('')
+                        handleBobberAreaChange('')
+                        handleMineAreaChange('')
                       }}
                     />
                     <RadioOptions
@@ -639,20 +768,22 @@ export default function Home() {
                         handleLocationChange('Desert')
                         handleSubAreaChange('TopPond')
                         handleBobberAreaChange('')
+                        handleMineAreaChange('')
                       }}
                     />
                     <RadioOptions
-                      customIcon="/stardew-fishing-calc/assets/tiles/tile709.png"
-                      label="Secret Woods"
+                      customIcon="/stardew-fishing-calc/assets/tiles/tile308.png"
+                      label="Witch Swamp"
                       deselectedColor="bg-white"
                       selectedColor="bg-blue-300"
-                      checked={selectedLocation === 'Woods'}
+                      checked={selectedLocation === 'WitchSwamp'}
                       onChange={() => {
-                      handleLocationChange('Woods')
-                      handleSubAreaChange('')
-                      handleBobberAreaChange('')
-                    }}
-                  />
+                        handleLocationChange('WitchSwamp')
+                        handleSubAreaChange('')
+                        handleBobberAreaChange('')
+                        handleMineAreaChange('')
+                      }}
+                    />
                     <div className="break-inside-avoid">
                       <BranchingOptions
                         customIcon="/stardew-fishing-calc/assets/tiles/tile829.png"
@@ -664,6 +795,7 @@ export default function Home() {
                           handleLocationChange('IslandNorth')
                           handleSubAreaChange('')
                           handleBobberAreaChange('')
+                          handleMineAreaChange('')
                         }}
                       >
                         <ChildrenOptions
@@ -675,6 +807,7 @@ export default function Home() {
                             handleLocationChange('IslandNorth')
                             handleSubAreaChange('')
                             handleBobberAreaChange('')
+                            handleMineAreaChange('')
                           }}
                         />
                         <ChildrenOptions
@@ -686,6 +819,7 @@ export default function Home() {
                             handleLocationChange('IslandWest')
                             handleSubAreaChange('Freshwater')
                             handleBobberAreaChange('')
+                            handleMineAreaChange('')
                           }}
                         />
                         <ChildrenOptions
@@ -697,6 +831,7 @@ export default function Home() {
                             handleLocationChange('IslandWest')
                             handleSubAreaChange('Ocean')
                             handleBobberAreaChange('')
+                            handleMineAreaChange('')
                           }}
                         />
                         <ChildrenOptions
@@ -708,6 +843,7 @@ export default function Home() {
                             handleLocationChange('IslandSouth')
                             handleSubAreaChange('')
                             handleBobberAreaChange('')
+                            handleMineAreaChange('')
                           }}
                         />
                         <ChildrenOptions
@@ -719,6 +855,7 @@ export default function Home() {
                             handleLocationChange('IslandSouthEastCave')
                             handleSubAreaChange('')
                             handleBobberAreaChange('')
+                            handleMineAreaChange('')
                           }}
                         />
                       </BranchingOptions>

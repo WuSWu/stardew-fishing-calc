@@ -27,6 +27,8 @@ export const RadioOptions = ({ customIcon, label, checked, onChange, deselectedC
           />
         )}
         <span className="text-center text-sm text-black leading-4 z-2">{label}</span>
+        {/* click area */}
+        <div className="absolute size-full z-2"></div>
       </label>
     </div>
   );
@@ -49,6 +51,8 @@ export const SmallOptions = ({ label, checked, onChange, deselectedColor, select
           className="hidden"
         />
         <span className="text-center text-sm text-black leading-4 z-2 text-nowrap">{label}</span>
+        {/* click area */}
+        <div className="absolute size-full z-2"></div>
       </label>
     </div>
   );
@@ -58,29 +62,31 @@ export const BranchingOptions = ({ customIcon, label, checked, onChange, deselec
   const [hovered, setHovered] = useState(false);
   return (
     <div className={`${deselectedColor} rounded-lg border-2 w-24 border-gray-400`}>
-      <div className={`relative flex items-center justify-center h-24 z-0 overflow-hidden`}>
-      <div className={`${selectedColor} absolute flex size-[150%] rounded-full z-1 ${checked ? styles.fadeout.checked : hovered ? styles.hovered : styles.fadeout}`}/>
-      <label
-        className="flex flex-col size-full justify-center items-center select-none cursor-pointer space-y-1 p-1"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      >
-        <input
-          type="radio"
-          checked={checked}
-          onChange={onChange}
-          className="hidden"
-        />
-        {customIcon && (
-          <img 
-            src={customIcon}
-            alt={label}
-            className="block size-10 z-2"
-            style={{imageRendering: 'pixelated'}}
+      <div className={`relative flex items-center justify-center ${customIcon && "h-24"} z-0 overflow-hidden`}>
+        <div className={`${selectedColor} absolute flex size-[150%] rounded-full z-1 ${checked ? styles.fadeout.checked : hovered ? styles.hovered : styles.fadeout}`}/>
+        <label
+          className="flex flex-col size-full justify-center items-center select-none cursor-pointer space-y-1 p-1"
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
+          <input
+            type="radio"
+            checked={checked}
+            onChange={onChange}
+            className="hidden"
           />
-        )}
-        <span className="text-center text-sm text-black leading-4 z-2">{label}</span>
-      </label>
+          {customIcon && (
+            <img 
+              src={customIcon}
+              alt={label}
+              className="block size-10 z-2"
+              style={{imageRendering: 'pixelated'}}
+            />
+          )}
+          <span className="text-center text-sm text-black leading-4 z-2">{label}</span>
+          {/* click area */}
+          <div className="absolute size-full z-2"></div>
+        </label>
       </div>
       <div>
         {children}
@@ -107,6 +113,8 @@ export const ChildrenOptions = ({ label, checked, onChange, selectedColor}) => {
           className="hidden"
         />
         <span className="text-center text-sm text-black leading-4 z-2 text-nowrap">{label}</span>
+        {/* click area */}
+        <div className="absolute size-full z-2"></div>
       </label>
     </div>
   );
