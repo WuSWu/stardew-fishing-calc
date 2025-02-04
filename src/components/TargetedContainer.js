@@ -21,7 +21,7 @@ const TargetedContainer = ({ options, onSelect, children, disabled }) => {
     }, [filteredOptions]);
 
     useEffect(() => {
-        document.getElementById("dropdownSearch").value = (selectedOption[1]) ? selectedOption[1] : "Select fish";
+        document.getElementById("dropdownSearch").value = (selectedOption[1]) ? selectedOption[1] : "选择鱼饵种类";
         onSelect((selectedOption[1]) ? selectedOption[1] : "")
     }, [selectedOption, isOpen])
 
@@ -56,13 +56,13 @@ const TargetedContainer = ({ options, onSelect, children, disabled }) => {
                 <div className={`h-full w-10 ${disabled ? "grayscale contrast-50" : ""}`}>
                     <img
                         src={img}
-                        alt={(selectedOption[1]) ? selectedOption[1] : "None selected"}
+                        alt={(selectedOption[1]) ? selectedOption[1] : "尚未选择"}
                         className="block size-10 z-20"
                         style={{imageRendering: 'pixelated'}}
                     />
                 </div>
                 <div className='grid auto-rows-auto'>
-                    <span className={`font-bold ${disabled ? "text-gray-600" : "text-black"}`}>{(selectedOption[1]) ? selectedOption[1] : "None selected"}</span>
+                    <span className={`font-bold ${disabled ? "text-gray-600" : "text-black"}`}>{(selectedOption[1]) ? selectedOption[1] : "尚未选择"}</span>
                 </div>
             </div>
             <div className="relative inline-block">
