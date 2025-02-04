@@ -866,7 +866,7 @@ export default function Home() {
 
               <div className='mt-4 rounded-lg border-2 p-2 2xl:mb-4'>
                 <TimeSlider
-                  title="Fishing Time:"
+                  title="钓鱼时间:"
                   value={timeOfDay}
                   disabled={(selectedSeason == 'MagicBait') ? true : false}
                   onChange={handleTimeChange} 
