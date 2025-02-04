@@ -494,14 +494,14 @@ export default function Home() {
       <div className="items-center justify-center mt-16 mb-16 gap-6 grid md:grid-flow-row lg:grid-flow-col">
 
         <div ref={parametersWindow} className="bg-white p-8 rounded shadow-xl">
-          <h1 className="lg:text-2xl text-xl font-bold mb-4 flex-wrap">Stardew Valley Fishing Calculator</h1>
-          <p className="text-lg text-gray-700">Calculates how likely fish will bite!</p>
+          <h1 className="lg:text-2xl text-xl font-bold mb-4 flex-wrap">星露谷物语钓鱼计算器(网管汉化)</h1>
+          <p className="text-lg text-gray-700">计算鱼类上钩的概率!</p>
 
           <div className="grid grid-cols-1 2xl:grid-cols-2 2xl:gap-4">
             <div>
               <div className="flex justify-left my-4">
                 <div className="shrink rounded-lg bg-green-200 text-green-700 p-2">
-                  <p className="lg:text-lg md:text-base font-bold mb-2">Season</p>
+                  <p className="lg:text-lg md:text-base font-bold mb-2">季节</p>
                   <div className="columns-3 md:columns-5 space-y-2 gap-2">
                     <RadioOptions
                       customIcon="/stardew-fishing-calc/assets/tiles/tile018.png"
@@ -554,7 +554,7 @@ export default function Home() {
 
               <div className="flex justify-left my-4">
                 <div className="shrink rounded-lg bg-blue-200 text-blue-700 p-2">
-                  <p className="lg:text-lg md:text-base font-bold mb-2">Fishing Location</p>
+                  <p className="lg:text-lg md:text-base font-bold mb-2">钓鱼地点</p>
                   <div className="columns-3 md:columns-5 space-y-2 gap-2">
                     <div className="break-inside-avoid">
                       <BranchingOptions
@@ -875,18 +875,18 @@ export default function Home() {
             </div>
             <div>
               <div className='my-4 rounded-lg border-2 p-2'>
-                <p className="text-base font-bold mb-2">Fish Type Modifiers</p>
+                <p className="text-base font-bold mb-2">钓鱼场景BUFF</p>
                 <div className="grid sm:grid-cols-1 md:grid-cols-2 mb-2 md:gap-8">
                   <div>
                     <Checkbox
-                      label="Raining"
+                      label="下雨"
                       checked={checkedItems.isRaining}
                       disabled={(selectedSeason == 'MagicBait') ? true : false}
                       onChange={handleCheckboxChange}
                       id="isRaining"
                     />
                     <Checkbox
-                      label="Using training rod"
+                      label="使用[训练用鱼竿]"
                       checked={(selectedSeason == 'MagicBait') ? false : checkedItems.isUsingTrainingRod}
                       disabled={(selectedSeason == 'MagicBait') ? true : false}
                       onChange={handleCheckboxChange}
@@ -898,7 +898,7 @@ export default function Home() {
                       direction="top"
                       hoverArea={
                         <Checkbox
-                          label="Extended family quest"
+                          label="[大家族]任务"
                           onChange={handleCheckboxChange}
                           id="isExtendedFamilyActive"
                         />
@@ -906,12 +906,12 @@ export default function Home() {
                       tooltip={<p className="text-sm w-40 text-wrap">Only assuming you fish at the correct area.</p>}
                     />
                     <Checkbox
-                      label="Trout derby active"
+                      label="[鳟鱼大赛]进行中"
                       onChange={handleCheckboxChange}
                       id="isTroutDerbyActive"
                     />
                     <Checkbox
-                      label="Squid fest active"
+                      label="[鱿鱼节]进行中"
                       onChange={handleCheckboxChange}
                       id="isSquidFestActive"
                     />
@@ -920,12 +920,12 @@ export default function Home() {
               </div>
 
               <div className='my-4 rounded-lg border-2 px-2 pt-2'>
-                <p className="text-base font-bold mb-2">Chance Modifiers</p>
+                <p className="text-base font-bold mb-2">概率修正器</p>
                 <div>
                   <div className="grid sm:grid-cols-1 md:grid-cols-2 mb-2 md:gap-8">
                     <div>
                       <GenericSlider
-                        title="Fishing Level:"
+                        title="钓鱼技能等级:"
                         min={0}
                         max={19}
                         value={fishingLevel}
@@ -935,7 +935,7 @@ export default function Home() {
                         direction="top"
                         hoverArea={
                           <GenericSlider
-                            title="Luck Buff Level:"
+                            title="幸运Buff等级:"
                             min={0}
                             max={13}
                             value={luckBuffs}
@@ -946,7 +946,7 @@ export default function Home() {
                       />
                       
                       <GenericSlider
-                        title="Water Depth:"
+                        title="水深:"
                         min={0}
                         max={5}
                         value={waterDepth}
@@ -955,7 +955,7 @@ export default function Home() {
                     </div>
                     <div>
                       <Checkbox
-                        label="Using curiosity lure"
+                        label="使用[珍稀诱钩]"
                         checked={checkedItems.isCuriosityLureActive}
                         onChange={handleCheckboxChange}
                         id="isCuriosityLureActive"
@@ -966,7 +966,7 @@ export default function Home() {
                         disabled={(selectedSeason == 'MagicBait') ? true : !checkedItems.isUsingTargetedBait}
                       >
                         <Checkbox
-                          label="Using targeted bait:"
+                          label="使用[针对性鱼饵]:"
                           checked={(selectedSeason == 'MagicBait') ? false : checkedItems.isUsingTargetedBait}
                           disabled={(selectedSeason == 'MagicBait') ? true : false}
                           onChange={handleCheckboxChange}
