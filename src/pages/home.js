@@ -101,7 +101,7 @@ export default function Home() {
       }
       if (!fish.Id || !fish.Id.match(/(\d+|Goby)/)) {
         if (fish.Id && fish.Id.match(/Jelly/)) {
-          fish.name = fish.Id.substring(3, fish.Id.length-5)+" Jelly"
+          fish.name = fish.Id.substring(3, fish.Id.length-5)+" 水母"
           fish.displayname = fish.name
           fish.weight = 0
           tempFishParamArray.push(fish);
@@ -1063,7 +1063,7 @@ export default function Home() {
             })}
             <FishCard
                 key={fishDataWithChance.length}
-                name="Trash"
+                name="垃圾"
                 chance={parseFloat(trashRate*100).toFixed(2)+"%"}
                 icon={`/stardew-fishing-calc/assets/tiles/tile168.png`}
               />
