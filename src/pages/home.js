@@ -96,11 +96,11 @@ export default function Home() {
       let fish = locationFishData[i]
       if (nonFishItems.includes(fish.Id) || fish.Id.includes("(F)")){
         switch(fish.Id){
-          case "(O)821" : fish.displayname = "Fossilized Spine"; break;
-          case "(O)825" : fish.displayname = "Snake Skull"; break;
-          case "(O)797" : fish.displayname = "Pearl"; break;
-          case "(F)2332" : fish.displayname = "Gourmand Statue"; break;
-          case "(F)2425" : fish.displayname = "Wall Basket"; break;
+          case "(O)821" : fish.displayname = "脊柱化石"; break;
+          case "(O)825" : fish.displayname = "蛇头骨"; break;
+          case "(O)797" : fish.displayname = "珍珠"; break;
+          case "(F)2332" : fish.displayname = "饕餮雕像"; break;
+          case "(F)2425" : fish.displayname = "壁篮"; break;
         }
         tempFishParamArray.push(fish);
         continue
