@@ -983,7 +983,7 @@ export default function Home() {
 
               <div className='my-4'>
                 <Accordion
-                  title="Advanced Options"
+                  title="高级选项"
                 >
                   <div className="rounded-lg p-2">
                     <div className="flex flex-row gap-2">
@@ -1007,28 +1007,28 @@ export default function Home() {
                     </div>
                     <div className="flex gap-4 items-center flex-wrap">
                       <SmallOptions
-                        label="Long-term"
+                        label="长期"
                         deselectedColor="bg-gray-300"
                         selectedColor="bg-white"
                         checked={jellyMode === 'longterm'}
                         onChange={() => handleJellyModeChange('longterm')}
                       />
                       <SmallOptions
-                        label="Next catch"
+                        label="下次捕获"
                         deselectedColor="bg-gray-300"
                         selectedColor="bg-white"
                         checked={jellyMode === 'nextcatch'}
                         onChange={() => handleJellyModeChange('nextcatch')}
                       />
                       <SmallOptions
-                        label="Good seed"
+                        label="好的种子"
                         deselectedColor="bg-gray-300"
                         selectedColor="bg-white"
                         checked={jellyMode === 'goodseed'}
                         onChange={() => handleJellyModeChange('goodseed')}
                       />
                       <SmallOptions
-                        label="Bad seed"
+                        label="坏的种子"
                         deselectedColor="bg-gray-300"
                         selectedColor="bg-white"
                         checked={jellyMode === 'badseed'}
