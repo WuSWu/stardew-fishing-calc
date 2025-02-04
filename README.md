@@ -1,10 +1,11 @@
 
-# stardew-fishing-calc
-Fishing chances calculator for Stardew Valley
+# 星露谷物语钓鱼计算器 - 中文汉化
+原版作者
+[brokencygnus](https://github.com/brokencygnus/stardew-fishing-calc)
 
-Visit the calculator [here](https://brokencygnus.github.io/stardew-fishing-calc/home)
+访问中文版在线计算器 [here](https://wuswu.github.io/stardew-fishing-calc/home)
 
-# To Do
-More locations - Currently caldera and some other minor locations are missing
+# 待办事项
+更多地点 - 目前火山口和一些其他小地点缺失。
 
-If I missed other things, let me know!
+如果您有其他遗漏的信息，~~请告诉我！~~ 请告诉原作者！
