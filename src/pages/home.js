@@ -364,21 +364,21 @@ export default function Home() {
               console.log(fishingLevel, chanceMultiplier)
               floorFishChance = 0.02 + 0.01 * chanceMultiplier
               mineFish["Id"] = "(O)158"
-              mineFish["displayname"] = "Stonefish"
+              mineFish["displayname"] = "石鱼"
               mineFish["finalChance"] = floorFishChance
               break;
             case "60":
               chanceMultiplier += (checkedItems.isUsingTargetedBait && targetedBaitName=="Ice Pip") ? 10 : 0
               floorFishChance = 0.015 + 0.009 * chanceMultiplier
               mineFish["Id"] = "(O)161"
-              mineFish["displayname"] = "Ice Pip"
+              mineFish["displayname"] = "冰柱鱼"
               mineFish["finalChance"] = floorFishChance
               break;
             case "100":
               chanceMultiplier += (checkedItems.isUsingTargetedBait && targetedBaitName=="Lava Eel") ? 10 : 0
               floorFishChance = 0.01 + 0.008 * chanceMultiplier
               mineFish["Id"] = "(O)162"
-              mineFish["displayname"] = "Lava Eel"
+              mineFish["displayname"] = "岩浆鳗鱼"
               mineFish["finalChance"] = floorFishChance
               caveJellyChance = 0.05 + 0.05 * luckBuffs
               break;
