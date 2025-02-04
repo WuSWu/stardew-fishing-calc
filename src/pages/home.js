@@ -101,7 +101,7 @@ export default function Home() {
       }
       if (!fish.Id || !fish.Id.match(/(\d+|Goby)/)) {
         if (fish.Id && fish.Id.match(/Jelly/)) {
-          fish.name = fish.Id.substring(3, fish.Id.length-5)+" 水母"
+          fish.name = fish.Id.substring(3, fish.Id.length-5)+" 凝胶"
           fish.displayname = fish.name
           fish.weight = 0
           tempFishParamArray.push(fish);
@@ -987,19 +987,19 @@ export default function Home() {
                 >
                   <div className="rounded-lg p-2">
                     <div className="flex flex-row gap-2">
-                      <p className="text-base text-gray-800 font-semibold mb-2">水母计算模式:</p>
+                      <p className="text-base text-gray-800 font-semibold mb-2">凝胶计算模式:</p>
                       <Tooltip
                         img="/stardew-fishing-calc/assets/bubble2.gif"
                         direction="top"
                         tooltip={
                           <div className="text-sm w-72 md:w-96 text-wrap p-1">
-                            <p className="font-semibold">水母的获取几率比较特殊</p>
-                            <p>能否捕获水母取决于一个种子值。这个种子值取决于你已捕获的鱼的数量（不包括垃圾和藻类）。因此我们提供了几个选项：</p>
+                            <p className="font-semibold">凝胶的获取几率比较特殊</p>
+                            <p>能否钓上凝胶取决于一个种子值。这个种子值取决于你已捕获的鱼的数量（不包括垃圾和藻类）。因此我们提供了几个选项：</p>
                             <ul className="mt-4 list-decimal list-inside space-y-2">
-                              <li><span className="font-semibold">长期（默认）：</span> 如果你在同一位置长期钓鱼时，捕获水母的预期概率</li>
-                              <li><span className="font-semibold">下次捕获：</span> 在随机状态下立即捕获水母的概率。当你钓到垃圾时，这个概率会降低</li>
-                              <li><span className="font-semibold">好的种子值：</span> 如果你有正确的种子值，捕获水母的概率变为1。不过，仍然需要考虑其他鱼的影响</li>
-                              <li><span className="font-semibold">坏的种子值：</span> 如果你的种子值不对，捕获水母的概率变为0</li>
+                              <li><span className="font-semibold">长期（默认）：</span> 如果你在同一位置长期钓鱼时，捕获凝胶的预期概率</li>
+                              <li><span className="font-semibold">下次捕获：</span> 在随机状态下立即捕获凝胶的概率。当你钓到垃圾时，这个概率会降低</li>
+                              <li><span className="font-semibold">好的种子值：</span> 如果你有正确的种子值，捕获凝胶的概率变为1。不过，仍然需要考虑其他鱼的影响</li>
+                              <li><span className="font-semibold">坏的种子值：</span> 如果你的种子值不对，捕获凝胶的概率变为0</li>
                             </ul>
                           </div>
                         }
