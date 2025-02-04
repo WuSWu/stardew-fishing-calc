@@ -85,6 +85,11 @@ export default function Home() {
 
   // populate fish data with Fish.xnb if new location data is pulled
   useEffect(() => {
+    // 汉化凝胶 - 内部添加映射关系
+    const jellyPrefixMap = {
+      'Sea': '海',
+      'River': '河',
+    };
     let tempFishParamArray = []
     for (let i in locationFishData) {
       let fish = locationFishData[i]
@@ -101,7 +106,8 @@ export default function Home() {
       }
       if (!fish.Id || !fish.Id.match(/(\d+|Goby)/)) {
         if (fish.Id && fish.Id.match(/Jelly/)) {
-          fish.name = fish.Id.substring(3, fish.Id.length-5)+" 凝胶"
+          // fish.name = fish.Id.substring(3, fish.Id.length-5)+" 凝胶"
+          fish.name = jellyPrefixMap[fish.Id.substring(3, fish.Id.length-5)] + "凝胶";
           fish.displayname = fish.name
           fish.weight = 0
           tempFishParamArray.push(fish);
