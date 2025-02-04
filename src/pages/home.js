@@ -505,7 +505,7 @@ export default function Home() {
                   <div className="columns-3 md:columns-5 space-y-2 gap-2">
                     <RadioOptions
                       customIcon="/stardew-fishing-calc/assets/tiles/tile018.png"
-                      label="Spring"
+                      label="春季"
                       deselectedColor="bg-white"
                       selectedColor="bg-green-300"
                       hoverColor="bg-green-100"
@@ -514,7 +514,7 @@ export default function Home() {
                     />
                     <RadioOptions
                       customIcon="/stardew-fishing-calc/assets/tiles/tile402.png"
-                      label="Summer"
+                      label="夏季"
                       deselectedColor="bg-white"
                       selectedColor="bg-green-300"
                       hoverColor="bg-green-100"
@@ -523,7 +523,7 @@ export default function Home() {
                     />
                     <RadioOptions
                       customIcon="/stardew-fishing-calc/assets/tiles/tile408.png"
-                      label="Fall"
+                      label="秋季"
                       deselectedColor="bg-white"
                       selectedColor="bg-green-300"
                       hoverColor="bg-green-100"
@@ -532,7 +532,7 @@ export default function Home() {
                     />
                     <RadioOptions
                       customIcon="/stardew-fishing-calc/assets/tiles/tile416.png"
-                      label="Winter"
+                      label="冬季"
                       deselectedColor="bg-white"
                       selectedColor="bg-green-300"
                       hoverColor="bg-green-100"
@@ -541,7 +541,7 @@ export default function Home() {
                     />
                     <RadioOptions
                       customIcon="/stardew-fishing-calc/assets/tiles/tile908.png"
-                      label="Magic Bait"
+                      label="魔法鱼饵"
                       deselectedColor="bg-white"
                       selectedColor="bg-green-300"
                       hoverColor="bg-green-100"
@@ -559,7 +559,7 @@ export default function Home() {
                     <div className="break-inside-avoid">
                       <BranchingOptions
                         customIcon="/stardew-fishing-calc/assets/tiles/tile372.png"
-                        label="Beach"
+                        label="沙滩"
                         deselectedColor="bg-white"
                         selectedColor="bg-blue-300"
                         checked={selectedLocation === 'Beach'}
@@ -571,7 +571,7 @@ export default function Home() {
                         }}
                       >
                         <ChildrenOptions
-                          label="Default"
+                          label="默认"
                           deselectedColor="bg-white"
                           selectedColor="bg-blue-300"
                           checked={selectedLocation === 'Beach' && selectedSubArea == '' && selectedBobberArea == ''}
@@ -586,7 +586,7 @@ export default function Home() {
                           direction={(windowWidth >= 640) ? "right" : "top"}
                           hoverArea={
                             <ChildrenOptions
-                              label="West Pier"
+                              label="西边码头"
                               deselectedColor="bg-white"
                               selectedColor="bg-blue-300"
                               checked={selectedBobberArea === 'SubmarinePier'}
@@ -598,13 +598,13 @@ export default function Home() {
                               }}
                             />
                           }
-                          tooltip={<p className="text-sm w-40 text-wrap">Fishing with magic bait on the westernmost pier where the submarine would be at the night market.</p>}
+                          tooltip={<p className="text-sm w-40 text-wrap">在最西边的码头上用魔法鱼饵钓鱼，潜水艇会在那里的夜市出现。</p>}
                         />
                       </BranchingOptions>
                     </div>
                     <RadioOptions
                       customIcon="/stardew-fishing-calc/assets/tiles/tile117.png"
-                      label="Submarine"
+                      label="潜水艇"
                       deselectedColor="bg-white"
                       selectedColor="bg-blue-300"
                       checked={selectedLocation === 'Submarine'}
@@ -617,7 +617,7 @@ export default function Home() {
                     />
                     <RadioOptions
                       customIcon="/stardew-fishing-calc/assets/tiles/tile032.png"
-                      label="Mountain Lake"
+                      label="山区湖泊"
                       deselectedColor="bg-white"
                       selectedColor="bg-blue-300"
                       checked={selectedLocation === 'Mountain'}
@@ -631,7 +631,7 @@ export default function Home() {
                     <div className="break-inside-avoid">
                       <BranchingOptions
                         customIcon="/stardew-fishing-calc/assets/tiles/tilePickaxe.png"
-                        label="Mines"
+                        label="矿洞"
                         deselectedColor="bg-white"
                         selectedColor="bg-blue-300"
                         checked={selectedLocation === 'UndergroundMine'}
@@ -643,7 +643,7 @@ export default function Home() {
                         }}
                       >
                         <ChildrenOptions
-                          label="Floor 20"
+                          label="第20层"
                           deselectedColor="bg-white"
                           selectedColor="bg-blue-300"
                           checked={selectedMineArea === '20'}
@@ -655,7 +655,7 @@ export default function Home() {
                           }}
                         />
                         <ChildrenOptions
-                          label="Floor 60"
+                          label="第60层"
                           deselectedColor="bg-white"
                           selectedColor="bg-blue-300"
                           checked={selectedMineArea === '60'}
@@ -667,7 +667,7 @@ export default function Home() {
                           }}
                         />
                         <ChildrenOptions
-                          label="Floor 100"
+                          label="第100层"
                           deselectedColor="bg-white"
                           selectedColor="bg-blue-300"
                           checked={selectedMineArea === '100'}
@@ -683,7 +683,7 @@ export default function Home() {
                     <div className="break-inside-avoid">
                       <BranchingOptions
                         customIcon="/stardew-fishing-calc/assets/tiles/tile311.png"
-                        label="Cindersap Forest"
+                        label="煤矿森林"
                         deselectedColor="bg-white"
                         selectedColor="bg-blue-300"
                         checked={selectedLocation === 'Forest'}
@@ -695,7 +695,7 @@ export default function Home() {
                         }}
                       >
                         <ChildrenOptions
-                          label="River"
+                          label="河流"
                           deselectedColor="bg-white"
                           selectedColor="bg-blue-300"
                           checked={selectedSubArea === 'River' && selectedBobberArea !== "Waterfall"}
@@ -707,7 +707,7 @@ export default function Home() {
                           }}
                         />
                         <ChildrenOptions
-                          label="Pond"
+                          label="池塘"
                           deselectedColor="bg-white"
                           selectedColor="bg-blue-300"
                           checked={selectedSubArea === 'Lake'}
@@ -719,7 +719,7 @@ export default function Home() {
                           }}
                         />
                         <ChildrenOptions
-                          label="Waterfall"
+                          label="瀑布"
                           deselectedColor="bg-white"
                           selectedColor="bg-blue-300"
                           checked={selectedBobberArea === 'Waterfall'}
@@ -734,7 +734,7 @@ export default function Home() {
                     </div>
                     <RadioOptions
                       customIcon="/stardew-fishing-calc/assets/tiles/tile709.png"
-                      label="Secret Woods"
+                      label="秘密森林"
                       deselectedColor="bg-white"
                       selectedColor="bg-blue-300"
                       checked={selectedLocation === 'Woods'}
@@ -747,7 +747,7 @@ export default function Home() {
                     />
                     <RadioOptions
                       customIcon="/stardew-fishing-calc/assets/tiles/tile325.png"
-                      label="Pelican Town"
+                      label="鹈鹕镇"
                       deselectedColor="bg-white"
                       selectedColor="bg-blue-300"
                       checked={selectedLocation === 'Town'}
@@ -760,7 +760,7 @@ export default function Home() {
                     />
                     <RadioOptions
                       customIcon="/stardew-fishing-calc/assets/tiles/tile090.png"
-                      label="Desert"
+                      label="沙漠"
                       deselectedColor="bg-white"
                       selectedColor="bg-blue-300"
                       checked={selectedLocation === 'Desert'}
@@ -773,7 +773,7 @@ export default function Home() {
                     />
                     <RadioOptions
                       customIcon="/stardew-fishing-calc/assets/tiles/tile308.png"
-                      label="Witch Swamp"
+                      label="巫婆沼泽"
                       deselectedColor="bg-white"
                       selectedColor="bg-blue-300"
                       checked={selectedLocation === 'WitchSwamp'}
@@ -787,7 +787,7 @@ export default function Home() {
                     <div className="break-inside-avoid">
                       <BranchingOptions
                         customIcon="/stardew-fishing-calc/assets/tiles/tile829.png"
-                        label="Ginger Island"
+                        label="姜岛"
                         deselectedColor="bg-white"
                         selectedColor="bg-blue-300"
                         checked={['IslandNorth', 'IslandWest', 'IslandSouth', "IslandSouthEastCave"].includes(selectedLocation)}
@@ -799,7 +799,7 @@ export default function Home() {
                         }}
                       >
                         <ChildrenOptions
-                          label="North"
+                          label="北部"
                           deselectedColor="bg-white"
                           selectedColor="bg-blue-300"
                           checked={selectedLocation === 'IslandNorth'}
@@ -811,7 +811,7 @@ export default function Home() {
                           }}
                         />
                         <ChildrenOptions
-                          label="West (River)"
+                          label="西部 (河流)"
                           deselectedColor="bg-white"
                           selectedColor="bg-blue-300"
                           checked={selectedLocation === 'IslandWest' && selectedSubArea === 'Freshwater'}
@@ -823,7 +823,7 @@ export default function Home() {
                           }}
                         />
                         <ChildrenOptions
-                          label="West (Ocean)"
+                          label="西部 (海洋)"
                           deselectedColor="bg-white"
                           selectedColor="bg-blue-300"
                           checked={selectedLocation === 'IslandWest' && selectedSubArea === 'Ocean'}
@@ -835,7 +835,7 @@ export default function Home() {
                           }}
                         />
                         <ChildrenOptions
-                          label="South"
+                          label="南部"
                           deselectedColor="bg-white"
                           selectedColor="bg-blue-300"
                           checked={selectedLocation === 'IslandSouth'}
@@ -847,7 +847,7 @@ export default function Home() {
                           }}
                         />
                         <ChildrenOptions
-                          label="Pirate Cove"
+                          label="海盗湾"
                           deselectedColor="bg-white"
                           selectedColor="bg-blue-300"
                           checked={selectedLocation === 'IslandSouthEastCave'}
@@ -942,7 +942,7 @@ export default function Home() {
                             onChange={handleLuckBuffsChange} 
                           />
                         }
-                        tooltip={<p className="text-sm w-40 text-wrap">Total number of luck buffs from food, drinks, etc</p>}
+                        tooltip={<p className="text-sm w-40 text-wrap">食物、饮料等提供的幸运buff总数</p>}
                       />
                       
                       <GenericSlider
@@ -987,19 +987,19 @@ export default function Home() {
                 >
                   <div className="rounded-lg p-2">
                     <div className="flex flex-row gap-2">
-                      <p className="text-base text-gray-800 font-semibold mb-2">Jelly Calculation Mode:</p>
+                      <p className="text-base text-gray-800 font-semibold mb-2">水母计算模式:</p>
                       <Tooltip
                         img="/stardew-fishing-calc/assets/bubble2.gif"
                         direction="top"
                         tooltip={
                           <div className="text-sm w-72 md:w-96 text-wrap p-1">
-                            <p className="font-semibold">Jelly chance is a bit tricky.</p>
-                            <p>Whether you catch it or not depends on a seed. That seed depends on the number of fish you caught (excluding trash and algae). So we&apos;ve included several options:</p>
+                            <p className="font-semibold">水母的获取几率比较特殊</p>
+                            <p>能否捕获水母取决于一个种子值。这个种子值取决于你已捕获的鱼的数量（不包括垃圾和藻类）。因此我们提供了几个选项：</p>
                             <ul className="mt-4 list-decimal list-inside space-y-2">
-                              <li><span className="font-semibold">Long-term (default):</span> The expected chance to catch jelly if you&apos;re fishing in the same location for a long time.</li>
-                              <li><span className="font-semibold">Next catch:</span> The immediate chance to catch jelly given a random state. Your chance decreases when you catch trash.</li>
-                              <li><span className="font-semibold">Good seed:</span> If you have the correct seed, the chance for jelly becomes 1. There&apos;s still other fish to account for, though.</li>
-                              <li><span className="font-semibold">Bad seed:</span> If you have the wrong seed, the chance for jelly becomes 0.</li>
+                              <li><span className="font-semibold">长期（默认）：</span> 如果你在同一位置长期钓鱼时，捕获水母的预期概率</li>
+                              <li><span className="font-semibold">下次捕获：</span> 在随机状态下立即捕获水母的概率。当你钓到垃圾时，这个概率会降低</li>
+                              <li><span className="font-semibold">好的种子值：</span> 如果你有正确的种子值，捕获水母的概率变为1。不过，仍然需要考虑其他鱼的影响</li>
+                              <li><span className="font-semibold">坏的种子值：</span> 如果你的种子值不对，捕获水母的概率变为0</li>
                             </ul>
                           </div>
                         }
