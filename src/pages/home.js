@@ -1044,7 +1044,7 @@ export default function Home() {
         
         <div ref={fishDisplayWindow} style={{ maxHeight }} className="flex flex-col bg-white rounded shadow-xl lg:w-80 lg:h-full lg:overflow-y-auto">
           <div className="sticky top-0 bg-gray-200 text-gray-600 p-4">
-              <h3 className="text-xl font-bold">You will catch...</h3>
+              <h3 className="text-xl font-bold">你可能钓到...</h3>
           </div>
           <div className="flex flex-grow flex-col bg-white py-4">
             {fishDataWithChance.map((fish, index) => {
