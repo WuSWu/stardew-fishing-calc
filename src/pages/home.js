@@ -388,7 +388,7 @@ export default function Home() {
             mineFishArray.push(mineFish)
             let caveJelly = {
               Id: "(O)CaveJelly",
-              displayname: "Cave Jelly",
+              displayname: "洞穴凝胶",
               finalChance: caveJellyChance * (1 - floorFishChance)
             }
             mineFishArray.push(caveJelly)
