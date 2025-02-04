@@ -89,6 +89,7 @@ export default function Home() {
     const jellyPrefixMap = {
       'Sea': '海',
       'River': '河',
+      'Cave': '洞穴',
     };
     let tempFishParamArray = []
     for (let i in locationFishData) {
